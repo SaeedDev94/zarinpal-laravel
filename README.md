@@ -93,3 +93,8 @@ use Zarinpal\Zarinpal;
 $client = new Zarinpal('test', new SoapDriver(), true);
 ...
 ```
+
+the third argument is `$debug` so if we put it to true,
+it will use SandBox, keep in mind that SandBox is only available
+with `SoapDriver` and you can't use `RestDriver` for SandBox,
+but you can use `SoapDriver` instead of `RestDriver` for real payment if you want!
