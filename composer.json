@@ -1,12 +1,16 @@
 {
     "name": "saeedpooyanfar/zarinpal",
-    "description": "Zarinpal payment",
+    "description": "Zarinpal payment for laravel framework",
     "authors": [
         {
             "name": "Saeed Pooyanfar",
             "email": "saeedp47@gmail.com"
         }
     ],
+    "minimum-stability": "stable",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
     "autoload": {
         "psr-4": {
             "Zarinpal\\": "src/"
