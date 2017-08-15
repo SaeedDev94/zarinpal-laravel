@@ -1,9 +1,13 @@
-# Zarinpal Transaction Library for Laravel
-Just another transaction request library for zarinpal
+# Zarinpal payment for Laravel
 
-##add provider
-Add provider to providers list in "config/app.php":
-just add :
+install it:
+
+```
+composer require saeedpooyanfar/zarinpal
+```
+
+add it to providers in "config/app.php" file:
+
 ```php
 'providers' => [
     ...
@@ -11,44 +15,74 @@ just add :
     ...
 ]
 ```
-and run
-'`php artisan vendor:publish --provider="Zarinpal\Laravel\ZarinpalServiceProvider"`'
-to add config file to laravel configs directory.
 
-##usage
+publish the config file:
 
-###request
+```
+php artisan vendor:publish --provider="Zarinpal\Laravel\ZarinpalServiceProvider"
+```
+
+set "MERCHANT_ID" in `.env` file:
+
+```
+...
+MERCHANT_ID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+...
+```
+
+# Use it
+
+request new payment:
+
 ```php
-use Zarinpal\Drivers\SoapDriver;
+<?php
+
+...
+use Zarinpal\Drivers\RestDriver;
 use Zarinpal\Zarinpal;
+...
 
-$client = new Zarinpal(config('zarinpal.merchantID'), new SoapDriver());
-
-$answer = $client->request("http://example.com/verify.php", 4000, 'Payment Description');
-
-//it will redirect to zarinpal to do the transaction or fail and just echo the errors.
-if(isset($answer['Authority'])) {
-    return $client->redirect($answer['Authority']);
+...
+$client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
+$response = $client->request($callBackURL, $amount, $description);
+if(!isset($response['Authority'])) {
+	return 'Error!';
 }
-
-return 'There Was an error!';
+return $client->redirect();
+...
 ```
 
-###verify
+verify the payment:
+
 ```php
+<?php
+
+...
+use Zarinpal\Drivers\RestDriver;
+use Zarinpal\Zarinpal;
+...
+
+...
+$client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
+if($response['Success']) {
+	return 'Payment was successful.';
+}
+return 'Payment was not successful!';
+...
+```
+# SandBox is for developers
+
+if you want test zarinpal payment then SandBox is for you:
+
+```php
+<?php
+
+...
 use Zarinpal\Drivers\SoapDriver;
 use Zarinpal\Zarinpal;
+...
 
-$client = new Zarinpal(config('zarinpal.merchantID'),new SoapDriver());
-
-$result = $client->verify('OK', 4000);
-if($result['Success']) return 'Success';
-return 'Payment was not successful!';
-```
-
-##For Developers
-just put 'true' as third parameter of new instance of Zarinpal in both request and verify!
-
-```php
-$client = new Zarinpal('XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX',new SoapDriver(), true);
+...
+$client = new Zarinpal('test', new SoapDriver(), true);
+...
 ```
