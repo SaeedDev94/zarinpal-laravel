@@ -41,7 +41,7 @@ class Zarinpal
             'MerchantID'  => $this->merchantID,
             'CallbackURL' => $callbackURL,
             'Amount'      => $amount,
-            'Description' => $description,
+            'Description' => $description
         ];
         if (!empty($email)) {
             $input['Email'] = $email;
@@ -83,7 +83,7 @@ class Zarinpal
             $input = [
                 'MerchantID' => $this->merchantID,
                 'Authority'  => $authority,
-                'Amount'     => $amount,
+                'Amount'     => $amount
             ];
             return $this->driver->verify($input, $this->debug);
         }
