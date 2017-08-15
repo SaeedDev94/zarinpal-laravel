@@ -3,98 +3,89 @@
 namespace Zarinpal;
 
 use Zarinpal\Drivers\DriverInterface;
+use Session;
 
 class Zarinpal
 {
     private $merchantID;
     private $driver;
-    private $Authority;
-
+    private $authority;
+    private $amount;
     private $debug;
 
     public function __construct($merchantID, DriverInterface $driver, $debug = false)
     {
         $this->merchantID = $merchantID;
         $this->driver = $driver;
-
+        $this->authority = null;
+        $this->amount = 0;
         $this->debug = $debug;
     }
 
     /**
-     * send request for money to zarinpal
-     * and redirect if there was no error.
+     * Request for new payment
+     * to get "Authority" if no error occur
      *
      * @param string $callbackURL
-     * @param string $Amount
-     * @param string $Description
-     * @param string $Email
-     * @param string $Mobile
+     * @param int    $amount
+     * @param string $description
+     * @param string $email
+     * @param string $mobile
      *
-     * @return array|@redirect
+     * @return void
      */
-    public function request($callbackURL, $Amount, $Description, $Email = null, $Mobile = null)
+    public function request($callbackURL, $amount, $description, $email = '', $mobile = '')
     {
-        $inputs = [
+        $this->amount = $amount;
+        $input = [
             'MerchantID'  => $this->merchantID,
             'CallbackURL' => $callbackURL,
-            'Amount'      => $Amount,
-            'Description' => $Description,
+            'Amount'      => $amount,
+            'Description' => $description,
         ];
-        if (!empty($Email)) {
-            $inputs['Email'] = $Email;
+        if (!empty($email)) {
+            $input['Email'] = $email;
         }
-        if (!empty($Mobile)) {
-            $inputs['Mobile'] = $Mobile;
+        if (!empty($mobile)) {
+            $input['Mobile'] = $mobile;
         }
-        $auth = $this->driver->request($inputs, $this->debug);
-        if (empty($auth['Authority'])) {
-            $auth['Authority'] = null;
+        $response = $this->driver->request($input, $this->debug);
+        if (isset($response['Authority'])) {
+            $this->authority = $response['Authority'];
         }
-        $this->Authority = $auth['Authority'];
-
-        return $auth;
     }
 
     /**
-     * verify that the bill is paid or not
-     * by checking authority, amount and status.
+     * Redirect to payment page
      *
-     * @param $status
-     * @param $amount
-     * @param $authority
+     * @return redirect
+     */
+    public function redirect()
+    {
+        Session::put('authority', $this->authority);
+        Session::put('amount', $this->amount);
+        $sub = ($this->debug)? 'sandbox':'www';
+        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$this->authority;
+        return redirect($url);
+    }
+
+    /**
+     * Verify payment success
      *
      * @return array
      */
-    public function verify($status, $amount)
+    public function verify()
     {
-        $authority = \Session::get('auth');
-
-        if ($status == 'OK') {
-            $inputs = [
+        if(Session::has('authority') && Session::has('amount')) {
+            $authority = Session::get('authority');
+            $amount = Session::get('amount');
+            $input = [
                 'MerchantID' => $this->merchantID,
                 'Authority'  => $authority,
                 'Amount'     => $amount,
             ];
-
-            return $this->driver->verify($inputs, $this->debug);
-        } else {
-            return ['Status' => 'canceled'];
+            return $this->driver->verify($input, $this->debug);
         }
-    }
-
-    public function redirect($auth)
-    {
-        \Session::put('auth', $auth);
-        $url = ($this->debug) ? 'sandbox' : 'www';
-
-        return redirect('https://'.$url.'.zarinpal.com/pg/StartPay/'.$this->Authority);
-    }
-
-    /**
-     * @return DriverInterface
-     */
-    public function getDriver()
-    {
-        return $this->driver;
+        return ['Success' => false];
     }
 }

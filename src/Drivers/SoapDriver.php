@@ -2,103 +2,60 @@
 
 namespace Zarinpal\Drivers;
 
+use SoapClient;
+
 class SoapDriver implements DriverInterface
 {
+    private $url;
     private $debug;
-    private $wsdlAddress;
-
-    public function setWsdlAddress()
-    {
-        $url = ($this->debug) ? 'sandbox' : 'www';
-
-        $this->wsdlAddress = 'https://'.$url.'.zarinpal.com/pg/services/WebGate/wsdl';
-
-        return $this->wsdlAddress;
-    }
 
     /**
-     * request driver.
+     * Request driver
      *
-     * @param $inputs
+     * @param array $input
+     * @param bool  $debug
      *
      * @return array
      */
-    public function request($inputs, $debug)
+    public function request($input, $debug)
     {
         $this->debug = $debug;
-
-        $client = new \SoapClient($this->setWsdlAddress(), ['encoding' => 'UTF-8']);
-        $result = $client->PaymentRequest($inputs);
-        if ($result->Status == 100) {
-            return ['Authority' => $result->Authority];
-        } else {
-            return ['error' => $result->Status];
+        $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
+        $response = $client->PaymentRequest($input);
+        if ($response->Status == 100) {
+            return ['Authority' => $response->Authority];
         }
+        return ['Error' => $response->Status];
     }
 
     /**
-     * request driver.
+     * Verify driver
      *
-     * @param $inputs
-     *
-     * @return array
-     */
-    public function requestWithExtra($inputs)
-    {
-        $client = new \SoapClient($this->setWsdlAddress(), ['encoding' => 'UTF-8']);
-        $result = $client->PaymentRequestWithExtra($inputs);
-        if ($result->Status == 100) {
-            return ['Authority' => $result->Authority];
-        } else {
-            return ['error' => $result->Status];
-        }
-    }
-
-    /**
-     * verify driver.
-     *
-     * @param $inputs
+     * @param array $input
+     * @param bool  $debug
      *
      * @return array
      */
-    public function verify($inputs, $debug)
+    public function verify($input, $debug)
     {
         $this->debug = $debug;
-        $client = new \SoapClient($this->setWsdlAddress(), ['encoding' => 'UTF-8']);
-        $result = $client->PaymentVerification($inputs);
-        if ($result->Status == 100) {
-            return ['Success' => true, 'Authority' => $_GET['Authority'], 'RefID' => $result->RefID];
-        } else {
-            return ['Success' => false, 'Authority' => $_GET['Authority']];
+        $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
+        $response = $client->PaymentVerification($input);
+        if ($response->Status == 100) {
+            return ['Success' => true, 'RefID' => $response->RefID];
         }
+        return ['Success' => false];
     }
 
     /**
-     * verify driver.
+     * Generate proper URL for driver
      *
-     * @param $inputs
-     *
-     * @return array
+     * @return string
      */
-    public function verifyWithExtra($inputs)
+    public function mkurl()
     {
-        $client = new \SoapClient($this->wsdlAddress, ['encoding' => 'UTF-8']);
-        $result = $client->PaymentVerificationWithExtra($inputs);
-
-        if ($result->Status == 100) {
-            return ['Status' => 'success', 'RefID' => $result->RefID];
-        } else {
-            return ['Status' => 'error', 'error' => $result->Status];
-        }
-    }
-
-    /**
-     * @param mixed $wsdlAddress
-     *
-     * @return void
-     */
-    public function setAddress($wsdlAddress)
-    {
-        $this->wsdlAddress = $wsdlAddress;
+        $sub = ($this->debug)? 'sandbox':'www';
+        $url = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';
+        return $url;
     }
 }

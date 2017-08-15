@@ -4,40 +4,30 @@ namespace Zarinpal\Drivers;
 
 interface DriverInterface
 {
-    public function setWsdlAddress();
-
     /**
-     * @param $inputs
+     * Request driver
      *
-     * @return array|redirect
-     */
-    public function request($inputs, $debug);
-
-    /**
-     * @param $inputs
-     *
-     * @return array|redirect
-     */
-    public function requestWithExtra($inputs);
-
-    /**
-     * @param $inputs
+     * @param array $input
+     * @param bool  $debug
      *
      * @return array
      */
-    public function verify($inputs, $debug);
+    public function request($input, $debug);
 
     /**
-     * @param $inputs
+     * Verify driver
+     *
+     * @param array $input
+     * @param bool  $debug
      *
      * @return array
      */
-    public function verifyWithExtra($inputs);
+    public function verify($input, $debug);
 
     /**
-     * @param $inputs
+     * Generate proper URL for driver
      *
-     * @return array
+     * @return string
      */
-    public function setAddress($wsdlAddress);
+    public function mkurl();
 }
