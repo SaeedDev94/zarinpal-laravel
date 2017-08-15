@@ -48,6 +48,9 @@ use Zarinpal\Zarinpal;
 
 ...
 $client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
+$callBackURL = url('/payment/verify');
+$amount = 5000;
+$description = 'a short description';
 $response = $client->request($callBackURL, $amount, $description);
 if(!isset($response['Authority'])) {
 	return 'Error!';
