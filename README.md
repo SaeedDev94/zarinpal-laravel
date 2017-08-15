@@ -1,4 +1,4 @@
-# Zarinpal payment for Laravel
+# Zarinpal payment for Laravel Framework
 
 install it:
 
