@@ -9,11 +9,15 @@ composer require saeedpooyanfar/zarinpal
 add it to providers in "config/app.php" file:
 
 ```php
+<?php
+
+...
 'providers' => [
     ...
     Zarinpal\Laravel\ZarinpalServiceProvider::class,
     ...
-]
+],
+...
 ```
 
 publish the config file:
