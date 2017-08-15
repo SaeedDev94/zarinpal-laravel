@@ -6,7 +6,6 @@ use SoapClient;
 
 class SoapDriver implements DriverInterface
 {
-    private $url;
     private $debug;
 
     /**
