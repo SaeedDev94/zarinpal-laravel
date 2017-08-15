@@ -32,7 +32,7 @@ class Zarinpal
      * @param string $email
      * @param string $mobile
      *
-     * @return void
+     * @return array
      */
     public function request($callbackURL, $amount, $description, $email = '', $mobile = '')
     {
@@ -53,6 +53,7 @@ class Zarinpal
         if (isset($response['Authority'])) {
             $this->authority = $response['Authority'];
         }
+        return $response;
     }
 
     /**
