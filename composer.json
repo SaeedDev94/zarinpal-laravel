@@ -1,6 +1,7 @@
 {
     "name": "saeedpooyanfar/zarinpal",
     "description": "Zarinpal payment for Laravel Framework",
+    "license": "MIT",
     "authors": [
         {
             "name": "Saeed Pooyanfar",
