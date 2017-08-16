@@ -3,6 +3,7 @@
 namespace Zarinpal\Drivers;
 
 use SoapClient;
+use Exception;
 
 class SoapDriver implements DriverInterface
 {
@@ -19,12 +20,17 @@ class SoapDriver implements DriverInterface
     public function request($input, $debug)
     {
         $this->debug = $debug;
-        $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
-        $response = $client->PaymentRequest($input);
-        if ($response->Status == 100) {
-            return ['Authority' => $response->Authority];
+        try {
+            $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
+            $response = $client->PaymentRequest($input);
+            if ($response->Status == 100) {
+                return ['Authority' => $response->Authority];
+            }
+            return ['Error' => $response->Status];
         }
-        return ['Error' => $response->Status];
+        catch (Exception $e) {
+            return ['Error' => -99];
+        }
     }
 
     /**
@@ -38,12 +44,17 @@ class SoapDriver implements DriverInterface
     public function verify($input, $debug)
     {
         $this->debug = $debug;
-        $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
-        $response = $client->PaymentVerification($input);
-        if ($response->Status == 100) {
-            return ['Success' => true, 'RefID' => $response->RefID];
+        try {
+            $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
+            $response = $client->PaymentVerification($input);
+            if ($response->Status == 100) {
+                return ['Success' => true, 'RefID' => $response->RefID];
+            }
+            return ['Success' => false];    
         }
-        return ['Success' => false];
+        catch (Exception $e) {
+            return ['Success' => false];
+        }
     }
 
     /**

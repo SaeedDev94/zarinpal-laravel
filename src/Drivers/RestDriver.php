@@ -34,7 +34,7 @@ class RestDriver implements DriverInterface
             }
             return ['Error' => $response->Status];
         }
-        catch(RequestException $e) {
+        catch (RequestException $e) {
             return ['Error' => -99];
         }
     }
@@ -64,7 +64,7 @@ class RestDriver implements DriverInterface
             }
             return ['Success' => false];
         }
-        catch(RequestException $e) {
+        catch (RequestException $e) {
             return ['Success' => false];
         }
     }
