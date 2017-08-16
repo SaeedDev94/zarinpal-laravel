@@ -1,6 +1,6 @@
 {
     "name": "saeedpooyanfar/zarinpal",
-    "description": "Zarinpal payment for Laravel Framework",
+    "description": "Zarinpal payment for Laravel Framework (with sandbox support)",
     "license": "MIT",
     "authors": [
         {
