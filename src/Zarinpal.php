@@ -63,8 +63,8 @@ class Zarinpal
      */
     public function redirect()
     {
-        Session::put('authority', $this->authority);
-        Session::put('amount', $this->amount);
+        Session::put('zarinpal.authority', $this->authority);
+        Session::put('zarinpal.amount', $this->amount);
         $sub = ($this->debug)? 'sandbox':'www';
         $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$this->authority;
         return redirect($url);
@@ -77,9 +77,9 @@ class Zarinpal
      */
     public function verify()
     {
-        if(Session::has('authority') && Session::has('amount')) {
-            $authority = Session::get('authority');
-            $amount = Session::get('amount');
+        if(Session::has('zarinpal.authority') && Session::has('zarinpal.amount')) {
+            $authority = Session::get('zarinpal.authority');
+            $amount = Session::get('zarinpal.amount');
             $input = [
                 'MerchantID' => $this->merchantID,
                 'Authority'  => $authority,
