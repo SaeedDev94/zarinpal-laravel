@@ -26,7 +26,7 @@ publish the config file:
 php artisan vendor:publish --provider="Zarinpal\Laravel\ZarinpalServiceProvider"
 ```
 
-set "MERCHANT_ID" in `.env` file:
+set 36 chars "MERCHANT_ID" in `.env` file:
 
 ```
 ...
