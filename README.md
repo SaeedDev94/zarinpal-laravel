@@ -49,11 +49,11 @@ use Zarinpal\Zarinpal;
 ...
 $client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
 $payment = [
-	'CallbackURL' => route('payment.verify'), // Required
-	'Amount' 	  => 5000,                    // Required
-	'Description' => 'a short description',   // Required
-	'Email'		  => 'saeedp47@gmail.com',    // Optional
-	'Mobile'	  => '0933xxx7694'            // Optional
+    'CallbackURL' => route('payment.verify'), // Required
+    'Amount'      => 5000,                    // Required
+    'Description' => 'a short description',   // Required
+    'Email'       => 'saeedp47@gmail.com',    // Optional
+    'Mobile'      => '0933xxx7694'            // Optional
 ];
 $response = $client->request($payment);
 if(!isset($response['Authority'])) {
