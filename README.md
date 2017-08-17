@@ -80,7 +80,7 @@ return 'Payment was not successful!';
 ```
 # SandBox is for developers
 
-<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed
+<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed<br>
 if you want test zarinpal payment then SandBox is for you,
 set `ZARINPAL_DEBUG` to `true` in `.env` file:
 
@@ -92,7 +92,7 @@ ZARINPAL_DEBUG=true
 
 # SoapDriver
 
-<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed
+<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed<br>
 you can also use SoapDriver instead of RestDriver for real payments,
 set `ZARINPAL_DRIVER` to `Soap` in `.env` file:
 
