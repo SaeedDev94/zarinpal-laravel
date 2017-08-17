@@ -22,33 +22,29 @@ class Zarinpal
      * Request for new payment
      * to get "Authority" if no error occur
      *
-     * @param string $callbackURL
-     * @param int    $amount
-     * @param string $description
-     * @param string $email
-     * @param string $mobile
+     * @param array $input
      *
      * @return array
      */
-    public function request($callbackURL, $amount, $description, $email = '', $mobile = '')
+    public function request($input)
     {
-        $input = [
+        $payment = [
             'MerchantID'  => $this->merchantID,
-            'CallbackURL' => $callbackURL,
-            'Amount'      => $amount,
-            'Description' => $description
+            'CallbackURL' => $input['CallbackURL'],
+            'Amount'      => $input['Amount'],
+            'Description' => $input['Description']
         ];
-        if (!empty($email)) {
-            $input['Email'] = $email;
+        if (isset($input['Email'])) {
+            $payment['Email'] = $input['Email'];
         }
-        if (!empty($mobile)) {
-            $input['Mobile'] = $mobile;
+        if (isset($input['Mobile'])) {
+            $payment['Mobile'] = $input['Mobile'];
         }
-        $response = $this->driver->request($input, $this->debug);
+        $response = $this->driver->request($payment, $this->debug);
         if (isset($response['Authority'])) {
             Session::put('zarinpal.meta', [
                 'authority' => $response['Authority'],
-                'amount' => $amount
+                'amount' => $input['Amount']
             ]);
         }
         return $response;
@@ -82,12 +78,12 @@ class Zarinpal
     {
         if(Session::has('zarinpal.meta')) {
             $meta = Session::pull('zarinpal.meta');
-            $input = [
+            $payment = [
                 'MerchantID' => $this->merchantID,
                 'Authority'  => $meta['authority'],
                 'Amount'     => $meta['amount']
             ];
-            return $this->driver->verify($input, $this->debug);
+            return $this->driver->verify($payment, $this->debug);
         }
         return ['Success' => false];
     }
