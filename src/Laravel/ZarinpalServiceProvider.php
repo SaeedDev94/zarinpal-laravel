@@ -21,6 +21,7 @@ class ZarinpalServiceProvider extends ServiceProvider
 			$driver = (string) config('zarinpal.driver', 'Rest');
 			$debug = (bool) config('zarinpal.debug', 'false');
 			if($debug) {
+				$merchantID = 'test';
 				$driver = new SoapDriver();
 			}
 			else {
