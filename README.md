@@ -73,7 +73,7 @@ use Zarinpal\Laravel\Facade\Zarinpal;
 ...
 $zarinpal = Zarinpal::verify();
 if($zarinpal->response['Success']) {
-	return 'Payment was successful.';
+    return 'Payment was successful.';
 }
 return 'Payment was not successful!';
 ...
