@@ -9,16 +9,12 @@ class Zarinpal
 {
     private $merchantID;
     private $driver;
-    private $authority;
-    private $amount;
     private $debug;
 
     public function __construct($merchantID, DriverInterface $driver, $debug = false)
     {
         $this->merchantID = $merchantID;
         $this->driver = $driver;
-        $this->authority = null;
-        $this->amount = 0;
         $this->debug = $debug;
     }
 
@@ -36,7 +32,6 @@ class Zarinpal
      */
     public function request($callbackURL, $amount, $description, $email = '', $mobile = '')
     {
-        $this->amount = $amount;
         $input = [
             'MerchantID'  => $this->merchantID,
             'CallbackURL' => $callbackURL,
@@ -51,7 +46,10 @@ class Zarinpal
         }
         $response = $this->driver->request($input, $this->debug);
         if (isset($response['Authority'])) {
-            $this->authority = $response['Authority'];
+            Session::put('zarinpal.meta', [
+                'authority' => $response['Authority'],
+                'amount' => $amount
+            ]);
         }
         return $response;
     }
@@ -63,10 +61,15 @@ class Zarinpal
      */
     public function redirect()
     {
-        Session::put('zarinpal.authority', $this->authority);
-        Session::put('zarinpal.amount', $this->amount);
+        if(!Session::has('zarinpal.meta')) {
+            return redirect()->back()->withInput()
+            ->withErrors([
+                'zarinpal.error' => 'Payment can\'t start because meta data missed!'
+            ]);
+        }
+        $meta = Session::get('zarinpal.meta');
         $sub = ($this->debug)? 'sandbox':'www';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$this->authority;
+        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$meta['authority'];
         return redirect($url);
     }
 
@@ -77,13 +80,12 @@ class Zarinpal
      */
     public function verify()
     {
-        if(Session::has('zarinpal.authority') && Session::has('zarinpal.amount')) {
-            $authority = Session::get('zarinpal.authority');
-            $amount = Session::get('zarinpal.amount');
+        if(Session::has('zarinpal.meta')) {
+            $meta = Session::pull('zarinpal.meta');
             $input = [
                 'MerchantID' => $this->merchantID,
-                'Authority'  => $authority,
-                'Amount'     => $amount
+                'Authority'  => $meta['authority'],
+                'Amount'     => $meta['amount']
             ];
             return $this->driver->verify($input, $this->debug);
         }
