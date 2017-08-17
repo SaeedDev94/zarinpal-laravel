@@ -26,11 +26,11 @@ publish the config file:
 php artisan vendor:publish --provider="Zarinpal\Laravel\ZarinpalServiceProvider"
 ```
 
-set 36 chars "MERCHANT_ID" in `.env` file:
+set 36 chars "ZARINPAL_MERCHANTID" in `.env` file:
 
 ```
 ...
-MERCHANT_ID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ZARINPAL_MERCHANTID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 ...
 ```
 
@@ -42,12 +42,10 @@ request new payment:
 <?php
 
 ...
-use Zarinpal\Drivers\RestDriver;
-use Zarinpal\Zarinpal;
+use Zarinpal\Laravel\Facade\Zarinpal;
 ...
 
 ...
-$client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
 $payment = [
     'CallbackURL' => route('payment.verify'), // Required
     'Amount'      => 5000,                    // Required
@@ -55,11 +53,11 @@ $payment = [
     'Email'       => 'saeedp47@gmail.com',    // Optional
     'Mobile'      => '0933xxx7694'            // Optional
 ];
-$response = $client->request($payment);
-if(!isset($response['Authority'])) {
-	return 'Error!';
+$zarinpal = Zarinpal::request($payment);
+if(isset($zarinpal->response['Authority'])) {
+    return $zarinpal->redirect();
 }
-return $client->redirect();
+return 'Error!';
 ...
 ```
 
@@ -69,14 +67,12 @@ verify the payment:
 <?php
 
 ...
-use Zarinpal\Drivers\RestDriver;
-use Zarinpal\Zarinpal;
+use Zarinpal\Laravel\Facade\Zarinpal;
 ...
 
 ...
-$client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
-$response = $client->verify();
-if($response['Success']) {
+$zarinpal = Zarinpal::verify();
+if($zarinpal->response['Success']) {
 	return 'Payment was successful.';
 }
 return 'Payment was not successful!';
@@ -84,22 +80,24 @@ return 'Payment was not successful!';
 ```
 # SandBox is for developers
 
-if you want test zarinpal payment then SandBox is for you:
+<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed
+if you want test zarinpal payment then SandBox is for you,
+set `ZARINPAL_DEBUG` to `true` in `.env` file:
 
-```php
-<?php
-
+```
 ...
-use Zarinpal\Drivers\SoapDriver;
-use Zarinpal\Zarinpal;
-...
-
-...
-$client = new Zarinpal('test', new SoapDriver(), true);
+ZARINPAL_DEBUG=true
 ...
 ```
 
-the third argument is `$debug` so if we put it to true,
-it will use SandBox, keep in mind that SandBox is only available
-with `SoapDriver` and you can't use `RestDriver` for SandBox,
-but you can use `SoapDriver` instead of `RestDriver` for real payment if you want!
+# SoapDriver
+
+<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed
+you can also use SoapDriver instead of RestDriver for real payments,
+set `ZARINPAL_DRIVER` to `Soap` in `.env` file:
+
+```
+...
+ZARINPAL_DRIVER=Soap
+...
+```
