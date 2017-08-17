@@ -82,7 +82,7 @@ return 'Payment was not successful!';
 
 <b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed<br>
 if you want test zarinpal payment then SandBox is for you,
-set `ZARINPAL_DEBUG` to `true` in `.env` file:
+set `ZARINPAL_DEBUG` to `1` in `.env` file:
 
 ```
 ...
