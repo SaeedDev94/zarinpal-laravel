@@ -7,10 +7,10 @@ use Session;
 
 class Zarinpal
 {
-    protected $merchantID;
-    protected $driver;
-    protected $debug;
-    protected $response;
+    public $merchantID;
+    public $driver;
+    public $debug;
+    public $response;
 
     public function __construct($merchantID, DriverInterface $driver, $debug)
     {
