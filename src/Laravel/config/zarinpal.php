@@ -20,6 +20,6 @@ return [
     | debug
     |--------------------------------------------------------------------------
     */
-    'debug' => env('ZARINPAL_DEBUG', 'false'),
+    'debug' => env('ZARINPAL_DEBUG', '0'),
 
 ];

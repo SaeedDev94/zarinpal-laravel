@@ -86,7 +86,7 @@ set `ZARINPAL_DEBUG` to `true` in `.env` file:
 
 ```
 ...
-ZARINPAL_DEBUG=true
+ZARINPAL_DEBUG=1
 ...
 ```
 

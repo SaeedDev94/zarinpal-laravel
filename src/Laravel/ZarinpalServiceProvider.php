@@ -19,7 +19,7 @@ class ZarinpalServiceProvider extends ServiceProvider
 		$this->app->singleton('Zarinpal', function () {
 			$merchantID = (string) config('zarinpal.merchantID', 'test');
 			$driver = (string) config('zarinpal.driver', 'Rest');
-			$debug = (bool) config('zarinpal.debug', 'false');
+			$debug = (bool) config('zarinpal.debug', '0');
 			if($debug) {
 				$merchantID = 'test';
 				$driver = new SoapDriver();
