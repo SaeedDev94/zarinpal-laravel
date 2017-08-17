@@ -7,8 +7,8 @@ interface DriverInterface
     /**
      * Request driver
      *
-     * @param array $input
-     * @param bool  $debug
+     * @param  array $input
+     * @param  bool  $debug
      *
      * @return array
      */
@@ -17,8 +17,8 @@ interface DriverInterface
     /**
      * Verify driver
      *
-     * @param array $input
-     * @param bool  $debug
+     * @param  array $input
+     * @param  bool  $debug
      *
      * @return array
      */

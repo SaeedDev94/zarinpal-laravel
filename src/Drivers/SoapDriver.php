@@ -12,8 +12,8 @@ class SoapDriver implements DriverInterface
     /**
      * Request driver
      *
-     * @param array $input
-     * @param bool  $debug
+     * @param  array $input
+     * @param  bool  $debug
      *
      * @return array
      */
@@ -36,8 +36,8 @@ class SoapDriver implements DriverInterface
     /**
      * Verify driver
      *
-     * @param array $input
-     * @param bool  $debug
+     * @param  array $input
+     * @param  bool  $debug
      *
      * @return array
      */

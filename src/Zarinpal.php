@@ -22,7 +22,7 @@ class Zarinpal
      * Request for new payment
      * to get "Authority" if no error occur
      *
-     * @param array $input
+     * @param  array $input
      *
      * @return array
      */

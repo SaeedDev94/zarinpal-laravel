@@ -12,8 +12,8 @@ class RestDriver implements DriverInterface
     /**
      * Request driver
      *
-     * @param array $input
-     * @param bool  $debug
+     * @param  array $input
+     * @param  bool  $debug
      *
      * @return array
      */
@@ -42,8 +42,8 @@ class RestDriver implements DriverInterface
     /**
      * Verify driver
      *
-     * @param array $input
-     * @param bool  $debug
+     * @param  array $input
+     * @param  bool  $debug
      *
      * @return array
      */
