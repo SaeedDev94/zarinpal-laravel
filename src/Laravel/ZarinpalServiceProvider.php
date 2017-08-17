@@ -9,7 +9,7 @@ use Zarinpal\Zarinpal;
 
 class ZarinpalServiceProvider extends ServiceProvider
 {
-	/**
+    /**
      * Register the service provider.
      *
      * @return Zarinpal\Zarinpal
