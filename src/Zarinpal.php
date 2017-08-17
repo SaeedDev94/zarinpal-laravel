@@ -10,12 +10,14 @@ class Zarinpal
     private $merchantID;
     private $driver;
     private $debug;
+    private $response;
 
-    public function __construct($merchantID, DriverInterface $driver, $debug = false)
+    public function __construct($merchantID, DriverInterface $driver, $debug)
     {
         $this->merchantID = $merchantID;
         $this->driver = $driver;
         $this->debug = $debug;
+        $this->response = [];
     }
 
     /**
@@ -24,7 +26,7 @@ class Zarinpal
      *
      * @param  array $input
      *
-     * @return array
+     * @return Zarinpal\Zarinpal
      */
     public function request($input)
     {
@@ -40,14 +42,14 @@ class Zarinpal
         if (isset($input['Mobile'])) {
             $payment['Mobile'] = $input['Mobile'];
         }
-        $response = $this->driver->request($payment, $this->debug);
-        if (isset($response['Authority'])) {
+        $this->response = $this->driver->request($payment, $this->debug);
+        if (isset($this->response['Authority'])) {
             Session::put('zarinpal.meta', [
-                'authority' => $response['Authority'],
+                'authority' => $this->response['Authority'],
                 'amount' => $input['Amount']
             ]);
         }
-        return $response;
+        return $this;
     }
 
     /**
@@ -72,7 +74,7 @@ class Zarinpal
     /**
      * Verify payment success
      *
-     * @return array
+     * @return Zarinpal\Zarinpal
      */
     public function verify()
     {
@@ -83,8 +85,11 @@ class Zarinpal
                 'Authority'  => $meta['authority'],
                 'Amount'     => $meta['amount']
             ];
-            return $this->driver->verify($payment, $this->debug);
+            $this->response = $this->driver->verify($payment, $this->debug);
         }
-        return ['Success' => false];
+        else {
+            $this->response = ['Success' => false];
+        }
+        return $this;
     }
 }
