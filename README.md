@@ -48,10 +48,14 @@ use Zarinpal\Zarinpal;
 
 ...
 $client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
-$callBackURL = url('/payment/verify');
-$amount = 5000;
-$description = 'a short description';
-$response = $client->request($callBackURL, $amount, $description);
+$payment = [
+	'CallbackURL' => route('payment.verify'), // Required
+	'Amount' 	  => 5000,                    // Required
+	'Description' => 'a short description',   // Required
+	'Email'		  => 'saeedp47@gmail.com',    // Optional
+	'Mobile'	  => '0933xxx7694'            // Optional
+];
+$response = $client->request($payment);
 if(!isset($response['Authority'])) {
 	return 'Error!';
 }
@@ -71,6 +75,7 @@ use Zarinpal\Zarinpal;
 
 ...
 $client = new Zarinpal(config('zarinpal.merchantID'), new RestDriver());
+$response = $client->verify();
 if($response['Success']) {
 	return 'Payment was successful.';
 }
