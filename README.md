@@ -14,7 +14,7 @@ add it to providers in "config/app.php" file:
 ...
 'providers' => [
     ...
-    Zarinpal\Laravel\ZarinpalServiceProvider::class,
+    Zarinpal\ZarinpalServiceProvider::class,
     ...
 ],
 ...
@@ -23,7 +23,7 @@ add it to providers in "config/app.php" file:
 publish the config file:
 
 ```
-php artisan vendor:publish --provider="Zarinpal\Laravel\ZarinpalServiceProvider"
+php artisan vendor:publish --provider="Zarinpal\ZarinpalServiceProvider"
 ```
 
 set 36 chars "ZARINPAL_MERCHANTID" in `.env` file:
@@ -42,7 +42,7 @@ request new payment:
 <?php
 
 ...
-use Zarinpal\Laravel\Facade\Zarinpal;
+use Zarinpal\Facade\Zarinpal;
 ...
 
 ...
@@ -67,7 +67,7 @@ verify the payment:
 <?php
 
 ...
-use Zarinpal\Laravel\Facade\Zarinpal;
+use Zarinpal\Facade\Zarinpal;
 ...
 
 ...
