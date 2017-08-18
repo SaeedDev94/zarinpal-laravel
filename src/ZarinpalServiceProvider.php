@@ -1,6 +1,6 @@
 <?php
 
-namespace Zarinpal\Laravel;
+namespace Zarinpal;
 
 use Illuminate\Support\ServiceProvider;
 use Zarinpal\Drivers\RestDriver;

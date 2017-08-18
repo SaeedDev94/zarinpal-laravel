@@ -1,6 +1,6 @@
 <?php
 
-namespace Zarinpal\Laravel\Facade;
+namespace Zarinpal\Facade;
 
 use Illuminate\Support\Facades\Facade;
 
