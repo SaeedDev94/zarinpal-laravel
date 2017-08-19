@@ -4,7 +4,8 @@ namespace Zarinpal\Facade;
 
 use Illuminate\Support\Facades\Facade;
 
-class Zarinpal extends Facade {
+class Zarinpal extends Facade
+{
     /**
      * Get the registered name of the component.
      *
