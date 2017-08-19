@@ -32,7 +32,10 @@ class RestDriver implements DriverInterface
             return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
         catch (RequestException $e) {
-            return ['Status' => -99, 'Authority' => ''];
+            $response = $e->getResponse();
+            $response = is_null($response)? '{"Status":-99,"Authority":""}':$response->getBody()->getContents();
+            $response = json_decode($response);
+            return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
     }
 
@@ -59,7 +62,10 @@ class RestDriver implements DriverInterface
             return ['Status' => (int) $response->Status, (int) 'RefID' => $response->RefID ?? 0];
         }
         catch (RequestException $e) {
-            return ['Status' => -99, 'RefID' => 0];
+            $response = $e->getResponse();
+            $response = is_null($response)? '{"Status":-99,"RefID":0}':$response->getBody()->getContents();
+            $response = json_decode($response);
+            return ['Status' => (int) $response->Status, (int) 'RefID' => $response->RefID ?? 0];
         }
     }
 
