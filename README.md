@@ -75,7 +75,7 @@ $zarinpal = Zarinpal::verify();
 if($zarinpal->response['Status'] === 100) {
     return 'Payment was successful: '.$zarinpal->response['RefID'];
 }
-return 'Payment was not successful! Status: '.$zarinpal->response['Status'];
+return 'Error! Status: '.$zarinpal->response['Status'];
 ...
 ```
 
