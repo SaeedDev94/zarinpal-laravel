@@ -44,7 +44,7 @@ class SoapDriver implements DriverInterface
         try {
             $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
             $response = $client->PaymentVerification($input);
-            return ['Status' => (int) $response->Status, (int) 'RefID' => $response->RefID ?? 0];
+            return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
         catch (Exception $e) {
             return ['Status' => -99, 'RefID' => 0];

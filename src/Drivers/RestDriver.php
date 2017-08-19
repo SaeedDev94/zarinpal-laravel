@@ -59,13 +59,13 @@ class RestDriver implements DriverInterface
             );
             $response = $response->getBody()->getContents();
             $response = json_decode($response);
-            return ['Status' => (int) $response->Status, (int) 'RefID' => $response->RefID ?? 0];
+            return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
         catch (RequestException $e) {
             $response = $e->getResponse();
             $response = is_null($response)? '{"Status":-99,"RefID":0}':$response->getBody()->getContents();
             $response = json_decode($response);
-            return ['Status' => (int) $response->Status, (int) 'RefID' => $response->RefID ?? 0];
+            return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
     }
 
