@@ -44,7 +44,7 @@ class Zarinpal
             $payment['Mobile'] = $input['Mobile'];
         }
         $this->response = $this->driver->request($payment, $this->debug);
-        if (isset($this->response['Authority'])) {
+        if ($this->response['Status'] === 100) {
             Session::put('zarinpal.meta', [
                 'authority' => $this->response['Authority'],
                 'amount' => $input['Amount']
@@ -89,7 +89,7 @@ class Zarinpal
             $this->response = $this->driver->verify($payment, $this->debug);
         }
         else {
-            $this->response = ['Success' => false];
+            return ['Status' => -99, 'RefID' => 0];
         }
         return $this;
     }

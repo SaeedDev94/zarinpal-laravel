@@ -54,10 +54,10 @@ $payment = [
     'Mobile'      => '0933xxx7694'            // Optional
 ];
 $zarinpal = Zarinpal::request($payment);
-if(isset($zarinpal->response['Authority'])) {
+if($zarinpal->response['Status'] === 100) {
     return $zarinpal->redirect();
 }
-return 'Error!';
+return 'Error! Status: '.$zarinpal->response['Status'];
 ...
 ```
 
@@ -72,12 +72,13 @@ use Zarinpal\Facade\Zarinpal;
 
 ...
 $zarinpal = Zarinpal::verify();
-if($zarinpal->response['Success']) {
-    return 'Payment was successful.';
+if($zarinpal->response['Status'] === 100) {
+    return 'Payment was successful: '.$zarinpal->response['RefID'];
 }
-return 'Payment was not successful!';
+return 'Payment was not successful! Status: '.$zarinpal->response['Status'];
 ...
 ```
+
 # SandBox is for developers
 
 <b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed<br>

@@ -23,13 +23,10 @@ class SoapDriver implements DriverInterface
         try {
             $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
             $response = $client->PaymentRequest($input);
-            if ($response->Status == 100) {
-                return ['Authority' => $response->Authority];
-            }
-            return ['Error' => $response->Status];
+            return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
         catch (Exception $e) {
-            return ['Error' => -99];
+            return ['Status' => -99, 'Authority' => ''];
         }
     }
 
@@ -47,13 +44,10 @@ class SoapDriver implements DriverInterface
         try {
             $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
             $response = $client->PaymentVerification($input);
-            if ($response->Status == 100) {
-                return ['Success' => true, 'RefID' => $response->RefID];
-            }
-            return ['Success' => false];    
+            return ['Status' => (int) $response->Status, (int) 'RefID' => $response->RefID ?? 0];
         }
         catch (Exception $e) {
-            return ['Success' => false];
+            return ['Status' => -99, 'RefID' => 0];
         }
     }
 
