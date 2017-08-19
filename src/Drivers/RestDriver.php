@@ -80,7 +80,7 @@ class RestDriver implements DriverInterface
      */
     public function mkurl($debug)
     {
-        $sub = ($this->debug)? 'sandbox':'www';
+        $sub = ($debug)? 'sandbox':'www';
         $url = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
         return $url;
     }
