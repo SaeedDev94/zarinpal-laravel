@@ -89,7 +89,7 @@ class Zarinpal
             $this->response = $this->driver->verify($payment, $this->debug);
         }
         else {
-            return ['Status' => -99, 'RefID' => 0];
+            $this->response = ['Status' => -99, 'RefID' => 0];
         }
         return $this;
     }
