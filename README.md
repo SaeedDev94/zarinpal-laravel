@@ -90,6 +90,14 @@ ZARINPAL_DEBUG=1
 ...
 ```
 
+to disable it:
+
+```
+...
+ZARINPAL_DEBUG=0
+...
+```
+
 # SoapDriver
 
 <b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed<br>
@@ -99,5 +107,13 @@ set `ZARINPAL_DRIVER` to `Soap` in `.env` file:
 ```
 ...
 ZARINPAL_DRIVER=Soap
+...
+```
+
+back to rest:
+
+```
+...
+ZARINPAL_DRIVER=Rest
 ...
 ```
