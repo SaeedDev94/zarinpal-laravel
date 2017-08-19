@@ -10,9 +10,9 @@ use Zarinpal\Zarinpal;
 class ZarinpalServiceProvider extends ServiceProvider
 {
     /**
-     * Register the service provider.
+     * Register main class instance
      *
-     * @return Zarinpal\Zarinpal
+     * @return void
      */
     public function register()
     {
@@ -39,7 +39,9 @@ class ZarinpalServiceProvider extends ServiceProvider
     }
 
     /**
-     * Publish the plugin configuration.
+     * Publish the package config file.
+     *
+     * @return void
      */
     public function boot()
     {
