@@ -1,15 +1,18 @@
 {
     "name": "saeedpooyanfar/zarinpal",
     "description": "Zarinpal payment for Laravel Framework (with sandbox support)",
+    "keywords": ["zarinpal", "payment", "laravel", "framework"],
     "license": "MIT",
     "authors": [
         {
             "name": "Saeed Pooyanfar",
-            "email": "saeedp47@gmail.com"
+            "email": "saeedp47@gmail.com",
+            "homepage": "https://github.com/Saeed-Pooyanfar"
         }
     ],
     "minimum-stability": "stable",
     "require": {
+        "php": ">=7.0",
         "guzzlehttp/guzzle": "^6.3"
     },
     "autoload": {

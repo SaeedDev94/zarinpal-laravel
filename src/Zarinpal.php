@@ -3,8 +3,8 @@
 namespace Zarinpal;
 
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 use Zarinpal\Drivers\DriverInterface;
-use Session;
 
 class Zarinpal
 {

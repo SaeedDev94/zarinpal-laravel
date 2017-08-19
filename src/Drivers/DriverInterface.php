@@ -27,7 +27,9 @@ interface DriverInterface
     /**
      * Generate proper URL for driver
      *
+     * @param  bool  $debug
+     *
      * @return string
      */
-    public function mkurl();
+    public function mkurl($debug);
 }

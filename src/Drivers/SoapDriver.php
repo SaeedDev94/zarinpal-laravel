@@ -7,8 +7,6 @@ use Exception;
 
 class SoapDriver implements DriverInterface
 {
-    private $debug;
-
     /**
      * Request driver
      *
@@ -19,9 +17,8 @@ class SoapDriver implements DriverInterface
      */
     public function request($input, $debug)
     {
-        $this->debug = $debug;
         try {
-            $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
+            $client = new SoapClient($this->mkurl($debug), ['encoding' => 'UTF-8']);
             $response = $client->PaymentRequest($input);
             return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
@@ -40,9 +37,8 @@ class SoapDriver implements DriverInterface
      */
     public function verify($input, $debug)
     {
-        $this->debug = $debug;
         try {
-            $client = new SoapClient($this->mkurl(), ['encoding' => 'UTF-8']);
+            $client = new SoapClient($this->mkurl($debug), ['encoding' => 'UTF-8']);
             $response = $client->PaymentVerification($input);
             return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
@@ -54,9 +50,11 @@ class SoapDriver implements DriverInterface
     /**
      * Generate proper URL for driver
      *
+     * @param  bool  $debug
+     *
      * @return string
      */
-    public function mkurl()
+    public function mkurl($debug)
     {
         $sub = ($this->debug)? 'sandbox':'www';
         $url = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';

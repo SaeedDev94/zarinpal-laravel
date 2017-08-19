@@ -111,7 +111,7 @@ ZARINPAL_DRIVER=Soap
 ...
 ```
 
-back to rest:
+back to default:
 
 ```
 ...

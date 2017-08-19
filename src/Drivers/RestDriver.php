@@ -7,8 +7,6 @@ use GuzzleHttp\Exception\RequestException;
 
 class RestDriver implements DriverInterface
 {
-    private $debug;
-
     /**
      * Request driver
      *
@@ -19,9 +17,8 @@ class RestDriver implements DriverInterface
      */
     public function request($input, $debug)
     {
-        $this->debug = $debug;
         try {
-            $client = new Client(['base_uri' => $this->mkurl()]);
+            $client = new Client(['base_uri' => $this->mkurl($debug)]);
             $response = $client->request(
                 'POST',
                 'PaymentRequest.json',
@@ -31,9 +28,12 @@ class RestDriver implements DriverInterface
             $response = json_decode($response);
             return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
-        catch (RequestException $e) {
-            $response = $e->getResponse();
-            $response = is_null($response)? '{"Status":-99,"Authority":""}':$response->getBody()->getContents();
+        catch (RequestException $request) {
+            $response = '{"Status":-99,"Authority":""}';
+            if($request->hasResponse()) {
+                $response = $request->getResponse();
+                $response = $response->getBody()->getContents();
+            }
             $response = json_decode($response);
             return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
@@ -49,9 +49,8 @@ class RestDriver implements DriverInterface
      */
     public function verify($input, $debug)
     {
-        $this->debug = $debug;
         try {
-            $client = new Client(['base_uri' => $this->mkurl()]);
+            $client = new Client(['base_uri' => $this->mkurl($debug)]);
             $response = $client->request(
                 'POST',
                 'PaymentVerification.json',
@@ -61,9 +60,12 @@ class RestDriver implements DriverInterface
             $response = json_decode($response);
             return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
-        catch (RequestException $e) {
-            $response = $e->getResponse();
-            $response = is_null($response)? '{"Status":-99,"RefID":0}':$response->getBody()->getContents();
+        catch (RequestException $request) {
+            $response = '{"Status":-99,"RefID":0}';
+            if($request->hasResponse()) {
+                $response = $request->getResponse();
+                $response = $response->getBody()->getContents();
+            }
             $response = json_decode($response);
             return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
@@ -72,9 +74,11 @@ class RestDriver implements DriverInterface
     /**
      * Generate proper URL for driver
      *
+     * @param  bool  $debug
+     *
      * @return string
      */
-    public function mkurl()
+    public function mkurl($debug)
     {
         $sub = ($this->debug)? 'sandbox':'www';
         $url = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
