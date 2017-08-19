@@ -60,16 +60,16 @@ class Zarinpal
      */
     public function redirect()
     {
-        if(!Session::has('zarinpal.meta')) {
-            return redirect()->back()->withInput()
-            ->withErrors([
-                'zarinpal.error' => 'Payment can\'t start because meta data missed!'
-            ]);
+        if (Session::has('zarinpal.meta')) {
+            $meta = Session::get('zarinpal.meta');
+            $sub = ($this->debug)? 'sandbox':'www';
+            $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$meta['authority'];
+            return redirect($url);   
         }
-        $meta = Session::get('zarinpal.meta');
-        $sub = ($this->debug)? 'sandbox':'www';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$meta['authority'];
-        return redirect($url);
+        return redirect()->back()->withInput()
+        ->withErrors([
+            'zarinpal.error' => 'Payment can\'t start because meta data missed!'
+        ]);
     }
 
     /**
@@ -79,7 +79,7 @@ class Zarinpal
      */
     public function verify()
     {
-        if(Session::has('zarinpal.meta') && Input::get('Status') === 'OK') {
+        if (Session::has('zarinpal.meta') && Input::get('Status') === 'OK') {
             $meta = Session::pull('zarinpal.meta');
             $payment = [
                 'MerchantID' => $this->merchantID,
