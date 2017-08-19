@@ -2,6 +2,7 @@
 
 namespace Zarinpal;
 
+use Illuminate\Support\Facades\Input;
 use Zarinpal\Drivers\DriverInterface;
 use Session;
 
@@ -78,7 +79,7 @@ class Zarinpal
      */
     public function verify()
     {
-        if(Session::has('zarinpal.meta')) {
+        if(Session::has('zarinpal.meta') && Input::get('Status') === 'OK') {
             $meta = Session::pull('zarinpal.meta');
             $payment = [
                 'MerchantID' => $this->merchantID,
