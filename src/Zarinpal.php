@@ -90,11 +90,11 @@ class Zarinpal
         }
         else {
             /**
-             * Status -100 means "zarinpal.meta" session
+             * Status -102 means "zarinpal.meta" session
              * or "Status:OK" query string missed in
              * verify method of Zarinpal\Zarinpal class
              */
-            $this->response = ['Status' => -100, 'RefID' => 0];
+            $this->response = ['Status' => -102, 'RefID' => 0];
         }
         return $this;
     }
