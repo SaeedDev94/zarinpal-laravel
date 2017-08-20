@@ -23,9 +23,9 @@ class Zarinpal
 
     /**
      * Request for new payment
-     * to get "Authority" if no error occur
+     * to get "Authority" if no error occur.
      *
-     * @param  array $input
+     * @param array $input
      *
      * @return Zarinpal\Zarinpal
      */
@@ -35,7 +35,7 @@ class Zarinpal
             'MerchantID'  => $this->merchantID,
             'CallbackURL' => $input['CallbackURL'],
             'Amount'      => $input['Amount'],
-            'Description' => $input['Description']
+            'Description' => $input['Description'],
         ];
         if (isset($input['Email'])) {
             $payment['Email'] = $input['Email'];
@@ -47,14 +47,15 @@ class Zarinpal
         if ($this->response['Status'] === 100) {
             Session::put('zarinpal.meta', [
                 'authority' => $this->response['Authority'],
-                'amount' => $input['Amount']
+                'amount'    => $input['Amount'],
             ]);
         }
+
         return $this;
     }
 
     /**
-     * Redirect to payment page
+     * Redirect to payment page.
      *
      * @return redirect
      */
@@ -62,18 +63,20 @@ class Zarinpal
     {
         if (Session::has('zarinpal.meta')) {
             $meta = Session::get('zarinpal.meta');
-            $sub = ($this->debug)? 'sandbox':'www';
+            $sub = ($this->debug) ? 'sandbox' : 'www';
             $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$meta['authority'];
-            return redirect($url);   
+
+            return redirect($url);
         }
+
         return redirect()->back()->withInput()
         ->withErrors([
-            'zarinpal.error' => 'Payment can\'t start because meta data missed!'
+            'zarinpal.error' => 'Payment can\'t start because meta data missed!',
         ]);
     }
 
     /**
-     * Verify payment success
+     * Verify payment success.
      *
      * @return Zarinpal\Zarinpal
      */
@@ -84,18 +87,18 @@ class Zarinpal
             $payment = [
                 'MerchantID' => $this->merchantID,
                 'Authority'  => $meta['authority'],
-                'Amount'     => $meta['amount']
+                'Amount'     => $meta['amount'],
             ];
             $this->response = $this->driver->verify($payment, $this->debug);
-        }
-        else {
-            /**
+        } else {
+            /*
              * Status -102 means "zarinpal.meta" session
              * or "Status:OK" query string missed in
              * verify method of Zarinpal\Zarinpal class
              */
             $this->response = ['Status' => -102, 'RefID' => 0];
         }
+
         return $this;
     }
 }
