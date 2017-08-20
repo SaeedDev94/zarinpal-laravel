@@ -117,3 +117,16 @@ back to default:
 ZARINPAL_DRIVER=Rest
 ...
 ```
+
+# Custom status codes definition
+
+there are a bunch of status codes for differents stats,
+some of them are official and you can find their definitions
+in [this repo](https://github.com/ZarinPal-Lab/Documentation-PaymentGateway), 
+others are custom:
+
+- `Zarinpal\Zarinpal::verify[-100]`: "zarinpal.meta" session or "Status:OK" query string missed
+- `Zarinpal\Drivers\RestDriver::request[-201]`: method had no response
+- ` Zarinpal\Drivers\RestDriver::verify[-202]`: method had no response
+- `Zarinpal\Drivers\SoapDriver::request[-301]`: method had no response
+- ` Zarinpal\Drivers\SoapDriver::verify[-302]`: method had no response
