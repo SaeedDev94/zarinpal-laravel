@@ -23,7 +23,12 @@ class SoapDriver implements DriverInterface
             return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
         catch (Exception $e) {
-            return ['Status' => -99, 'Authority' => ''];
+            /**
+             * Status -301 means request method
+             * of Zarinpal\Drivers\SoapDriver class
+             * had no response
+             */
+            return ['Status' => -301, 'Authority' => ''];
         }
     }
 
@@ -43,7 +48,12 @@ class SoapDriver implements DriverInterface
             return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
         catch (Exception $e) {
-            return ['Status' => -99, 'RefID' => 0];
+            /**
+             * Status -302 means verify method
+             * of Zarinpal\Drivers\SoapDriver class
+             * had no response
+             */
+            return ['Status' => -302, 'RefID' => 0];
         }
     }
 

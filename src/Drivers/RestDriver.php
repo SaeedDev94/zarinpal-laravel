@@ -29,7 +29,12 @@ class RestDriver implements DriverInterface
             return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
         catch (RequestException $request) {
-            $response = '{"Status":-99,"Authority":""}';
+            /**
+             * Status -201 means request method
+             * of Zarinpal\Drivers\RestDriver class
+             * had no response
+             */
+            $response = '{"Status":-201,"Authority":""}';
             if($request->hasResponse()) {
                 $response = $request->getResponse();
                 $response = $response->getBody()->getContents();
@@ -61,7 +66,12 @@ class RestDriver implements DriverInterface
             return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
         catch (RequestException $request) {
-            $response = '{"Status":-99,"RefID":0}';
+            /**
+             * Status -202 means verify method
+             * of Zarinpal\Drivers\RestDriver class
+             * had no response
+             */
+            $response = '{"Status":-202,"RefID":0}';
             if($request->hasResponse()) {
                 $response = $request->getResponse();
                 $response = $response->getBody()->getContents();

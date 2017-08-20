@@ -89,7 +89,12 @@ class Zarinpal
             $this->response = $this->driver->verify($payment, $this->debug);
         }
         else {
-            $this->response = ['Status' => -99, 'RefID' => 0];
+            /**
+             * Status -100 means "zarinpal.meta" session
+             * or "Status:OK" query string missed in
+             * verify method of Zarinpal\Zarinpal class
+             */
+            $this->response = ['Status' => -100, 'RefID' => 0];
         }
         return $this;
     }
