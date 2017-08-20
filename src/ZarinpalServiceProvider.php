@@ -5,12 +5,11 @@ namespace Zarinpal;
 use Illuminate\Support\ServiceProvider;
 use Zarinpal\Drivers\RestDriver;
 use Zarinpal\Drivers\SoapDriver;
-use Zarinpal\Zarinpal;
 
 class ZarinpalServiceProvider extends ServiceProvider
 {
     /**
-     * Register main class instance
+     * Register main class instance.
      *
      * @return void
      */
@@ -28,6 +27,7 @@ class ZarinpalServiceProvider extends ServiceProvider
                     $driver = new RestDriver();
                     break;
             }
+
             return new Zarinpal($merchantID, $driver, $debug);
         });
     }

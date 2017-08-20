@@ -2,16 +2,16 @@
 
 namespace Zarinpal\Drivers;
 
-use SoapClient;
 use Exception;
+use SoapClient;
 
 class SoapDriver implements DriverInterface
 {
     /**
-     * Request driver
+     * Request driver.
      *
-     * @param  array $input
-     * @param  bool  $debug
+     * @param array $input
+     * @param bool  $debug
      *
      * @return array
      */
@@ -20,10 +20,10 @@ class SoapDriver implements DriverInterface
         try {
             $client = new SoapClient($this->mkurl($debug), ['encoding' => 'UTF-8']);
             $response = $client->PaymentRequest($input);
+
             return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
-        }
-        catch (Exception $e) {
-            /**
+        } catch (Exception $e) {
+            /*
              * Status -301 means request method
              * of Zarinpal\Drivers\SoapDriver class
              * had no response
@@ -33,10 +33,10 @@ class SoapDriver implements DriverInterface
     }
 
     /**
-     * Verify driver
+     * Verify driver.
      *
-     * @param  array $input
-     * @param  bool  $debug
+     * @param array $input
+     * @param bool  $debug
      *
      * @return array
      */
@@ -45,10 +45,10 @@ class SoapDriver implements DriverInterface
         try {
             $client = new SoapClient($this->mkurl($debug), ['encoding' => 'UTF-8']);
             $response = $client->PaymentVerification($input);
+
             return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
-        }
-        catch (Exception $e) {
-            /**
+        } catch (Exception $e) {
+            /*
              * Status -302 means verify method
              * of Zarinpal\Drivers\SoapDriver class
              * had no response
@@ -58,16 +58,17 @@ class SoapDriver implements DriverInterface
     }
 
     /**
-     * Generate proper URL for driver
+     * Generate proper URL for driver.
      *
-     * @param  bool  $debug
+     * @param bool $debug
      *
      * @return string
      */
     public function mkurl($debug)
     {
-        $sub = ($debug)? 'sandbox':'www';
+        $sub = ($debug) ? 'sandbox' : 'www';
         $url = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';
+
         return $url;
     }
 }
