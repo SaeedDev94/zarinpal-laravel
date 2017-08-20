@@ -81,7 +81,6 @@ return 'Error! Status: '.$zarinpal->response['Status'];
 
 # SandBox is for developers
 
-<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed<br>
 if you want test zarinpal payment then SandBox is for you,
 set `ZARINPAL_DEBUG` to `1` in `.env` file:
 
