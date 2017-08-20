@@ -1,5 +1,7 @@
 # Zarinpal payment for Laravel Framework
 
+[![StyleCI](https://styleci.io/repos/99886000/shield)](https://styleci.io/repos/99886000)
+
 install it:
 
 ```
