@@ -18,17 +18,17 @@ class ZarinpalServiceProvider extends ServiceProvider
         $this->app->singleton('Zarinpal', function () {
             $merchantID = (string) config('zarinpal.merchantID', 'test');
             $driver = (string) config('zarinpal.driver', 'Rest');
-            $debug = (bool) config('zarinpal.debug', '0');
+            $sandbox = (bool) config('zarinpal.sandbox', '0');
             switch ($driver) {
                 case 'Soap':
-                    $driver = new SoapDriver();
+                    $driver = new SoapDriver($sandbox);
                     break;
                 default:
-                    $driver = new RestDriver();
+                    $driver = new RestDriver($sandbox);
                     break;
             }
 
-            return new Zarinpal($merchantID, $driver, $debug);
+            return new Zarinpal($merchantID, $driver, $sandbox);
         });
     }
 

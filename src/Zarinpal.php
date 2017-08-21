@@ -2,22 +2,20 @@
 
 namespace Zarinpal;
 
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Session;
 use Zarinpal\Drivers\DriverInterface;
 
 class Zarinpal
 {
     public $merchantID;
     public $driver;
-    public $debug;
+    public $sandbox;
     public $response;
 
-    public function __construct($merchantID, DriverInterface $driver, $debug)
+    public function __construct($merchantID, DriverInterface $driver, $sandbox)
     {
         $this->merchantID = $merchantID;
         $this->driver = $driver;
-        $this->debug = $debug;
+        $this->sandbox = $sandbox;
         $this->response = [];
     }
 
@@ -43,13 +41,7 @@ class Zarinpal
         if (isset($input['Mobile'])) {
             $payment['Mobile'] = $input['Mobile'];
         }
-        $this->response = $this->driver->request($payment, $this->debug);
-        if ($this->response['Status'] === 100) {
-            Session::put('zarinpal.meta', [
-                'authority' => $this->response['Authority'],
-                'amount'    => $input['Amount'],
-            ]);
-        }
+        $this->response = $this->driver->request($payment);
 
         return $this;
     }
@@ -57,44 +49,39 @@ class Zarinpal
     /**
      * Redirect to payment page.
      *
+     * @param string $authority
+     *
      * @return redirect
      */
-    public function redirect()
+    public function redirect($authority)
     {
-        if (Session::has('zarinpal.meta')) {
-            $meta = Session::get('zarinpal.meta');
-            $sub = ($this->debug) ? 'sandbox' : 'www';
-            $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$meta['authority'];
+        $sub = ($this->sandbox) ? 'sandbox' : 'www';
+        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
 
-            return redirect($url);
-        }
-
-        return redirect()->back()->withInput()
-        ->withErrors([
-            'zarinpal.error' => 'Payment can\'t start because meta data missed!',
-        ]);
+        return redirect($url);
     }
 
     /**
      * Verify payment success.
      *
+     * @param array $input
+     *
      * @return Zarinpal\Zarinpal
      */
-    public function verify()
+    public function verify($input)
     {
-        if (Session::has('zarinpal.meta') && Input::get('Status') === 'OK') {
-            $meta = Session::pull('zarinpal.meta');
+        if ($input['Status'] === 'OK') {
             $payment = [
                 'MerchantID' => $this->merchantID,
-                'Authority'  => $meta['authority'],
-                'Amount'     => $meta['amount'],
+                'Authority'  => $input['Authority'],
+                'Amount'     => $input['Amount'],
             ];
-            $this->response = $this->driver->verify($payment, $this->debug);
+            $this->response = $this->driver->verify($payment);
         } else {
-            /*
-             * Status -102 means "zarinpal.meta" session
-             * or "Status:OK" query string missed in
-             * verify method of Zarinpal\Zarinpal class
+            /**
+             * Status -102 means "Status" query string
+             * is not equal to "OK" in verify method
+             * Zarinpal\Zarinpal class
              */
             $this->response = ['Status' => -102, 'RefID' => 0];
         }

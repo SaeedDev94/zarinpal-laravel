@@ -7,27 +7,32 @@ use GuzzleHttp\Exception\RequestException;
 
 class RestDriver implements DriverInterface
 {
+    public $baseUrl;
+
+    public function __construct($sandbox)
+    {
+        $sub = ($sandbox) ? 'sandbox' : 'www';
+        $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
+    }
+
     /**
      * Request driver.
      *
      * @param array $input
-     * @param bool  $debug
      *
      * @return array
      */
-    public function request($input, $debug)
+    public function request($input)
     {
         try {
-            $client = new Client(['base_uri' => $this->mkurl($debug)]);
-            $response = $client->request(
+            $response = $this->client()->request(
                 'POST',
                 'PaymentRequest.json',
                 ['json' => $input]
             );
             $response = $response->getBody()->getContents();
             $response = json_decode($response);
-
-            return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
+            $response = ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         } catch (RequestException $request) {
             /**
              * Status -201 means request method
@@ -40,32 +45,30 @@ class RestDriver implements DriverInterface
                 $response = $response->getBody()->getContents();
             }
             $response = json_decode($response);
-
-            return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
+            $response = ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
+
+        return $response;
     }
 
     /**
      * Verify driver.
      *
      * @param array $input
-     * @param bool  $debug
      *
      * @return array
      */
-    public function verify($input, $debug)
+    public function verify($input)
     {
         try {
-            $client = new Client(['base_uri' => $this->mkurl($debug)]);
-            $response = $client->request(
+            $response = $this->client()->request(
                 'POST',
                 'PaymentVerification.json',
                 ['json' => $input]
             );
             $response = $response->getBody()->getContents();
             $response = json_decode($response);
-
-            return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
+            $response = ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         } catch (RequestException $request) {
             /**
              * Status -202 means verify method
@@ -78,23 +81,21 @@ class RestDriver implements DriverInterface
                 $response = $response->getBody()->getContents();
             }
             $response = json_decode($response);
-
-            return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
+            $response = ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
+
+        return $response;
     }
 
     /**
-     * Generate proper URL for driver.
+     * Generate client object for driver.
      *
-     * @param bool $debug
-     *
-     * @return string
+     * @return GuzzleHttp\Client $client
      */
-    public function mkurl($debug)
+    public function client()
     {
-        $sub = ($debug) ? 'sandbox' : 'www';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
+        $client = new Client(['base_uri' => $this->baseUrl]);
 
-        return $url;
+        return $client;
     }
 }

@@ -8,28 +8,24 @@ interface DriverInterface
      * Request driver.
      *
      * @param array $input
-     * @param bool  $debug
      *
      * @return array
      */
-    public function request($input, $debug);
+    public function request($input);
 
     /**
      * Verify driver.
      *
      * @param array $input
-     * @param bool  $debug
      *
      * @return array
      */
-    public function verify($input, $debug);
+    public function verify($input);
 
     /**
-     * Generate proper URL for driver.
+     * Generate client object for driver.
      *
-     * @param bool $debug
-     *
-     * @return string
+     * @return client object
      */
-    public function mkurl($debug);
+    public function client();
 }

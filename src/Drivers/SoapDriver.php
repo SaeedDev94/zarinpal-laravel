@@ -7,68 +7,71 @@ use SoapClient;
 
 class SoapDriver implements DriverInterface
 {
+    public $baseUrl;
+
+    public function __construct($sandbox)
+    {
+        $sub = ($sandbox) ? 'sandbox' : 'www';
+        $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';
+    }
+
     /**
      * Request driver.
      *
      * @param array $input
-     * @param bool  $debug
      *
      * @return array
      */
-    public function request($input, $debug)
+    public function request($input)
     {
         try {
-            $client = new SoapClient($this->mkurl($debug), ['encoding' => 'UTF-8']);
-            $response = $client->PaymentRequest($input);
-
-            return ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
-        } catch (Exception $e) {
-            /*
+            $response = $this->client()->PaymentRequest($input);
+            $response = ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
+        } catch (Exception $error) {
+            /**
              * Status -301 means request method
              * of Zarinpal\Drivers\SoapDriver class
              * had no response
              */
-            return ['Status' => -301, 'Authority' => ''];
+            $response = ['Status' => -301, 'Authority' => ''];
         }
+
+        return $response;
     }
 
     /**
      * Verify driver.
      *
      * @param array $input
-     * @param bool  $debug
      *
      * @return array
      */
-    public function verify($input, $debug)
+    public function verify($input)
     {
         try {
-            $client = new SoapClient($this->mkurl($debug), ['encoding' => 'UTF-8']);
-            $response = $client->PaymentVerification($input);
-
-            return ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
-        } catch (Exception $e) {
-            /*
+            $response = $this->client()->PaymentVerification($input);
+            $response = ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
+        } catch (Exception $error) {
+            /**
              * Status -302 means verify method
              * of Zarinpal\Drivers\SoapDriver class
              * had no response
              */
-            return ['Status' => -302, 'RefID' => 0];
+            $response = ['Status' => -302, 'RefID' => 0];
         }
+
+        return $response;
     }
 
     /**
-     * Generate proper URL for driver.
+     * Generate client object for driver.
      *
-     * @param bool $debug
-     *
-     * @return string
+     * @return SoapClient $client
      */
-    public function mkurl($debug)
+    public function client()
     {
-        $sub = ($debug) ? 'sandbox' : 'www';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';
+        $client = new SoapClient($this->baseUrl, ['encoding' => 'UTF-8']);
 
-        return $url;
+        return $client;
     }
 }

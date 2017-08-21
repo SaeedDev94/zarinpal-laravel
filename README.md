@@ -1,7 +1,5 @@
 # Zarinpal payment for Laravel Framework
 
-[![StyleCI](https://styleci.io/repos/99886000/shield)](https://styleci.io/repos/99886000)
-
 install it:
 
 ```
@@ -57,7 +55,8 @@ $payment = [
 ];
 $zarinpal = Zarinpal::request($payment);
 if($zarinpal->response['Status'] === 100) {
-    return $zarinpal->redirect();
+    $authority = $zarinpal->response['Authority'];
+    return $zarinpal->redirect($authority);
 }
 return 'Error! Status: '.$zarinpal->response['Status'];
 ...
@@ -69,11 +68,17 @@ verify the payment:
 <?php
 
 ...
+use Illuminate\Support\Facades\Input;
 use Zarinpal\Facade\Zarinpal;
 ...
 
 ...
-$zarinpal = Zarinpal::verify();
+$payment = [
+    'Authority' => Input::get('Authority'),
+    'Status'    => Input::get('Status'),
+    'Amount'    => 5000
+];
+$zarinpal = Zarinpal::verify($payment);
 if($zarinpal->response['Status'] === 100) {
     return 'Payment was successful: '.$zarinpal->response['RefID'];
 }
@@ -84,11 +89,11 @@ return 'Error! Status: '.$zarinpal->response['Status'];
 # SandBox is for developers
 
 if you want test zarinpal payment then SandBox is for you,
-set `ZARINPAL_DEBUG` to `1` in `.env` file:
+set `ZARINPAL_SANDBOX` to `1` in `.env` file:
 
 ```
 ...
-ZARINPAL_DEBUG=1
+ZARINPAL_SANDBOX=1
 ...
 ```
 
@@ -96,7 +101,7 @@ to disable it:
 
 ```
 ...
-ZARINPAL_DEBUG=0
+ZARINPAL_SANDBOX=0
 ...
 ```
 
