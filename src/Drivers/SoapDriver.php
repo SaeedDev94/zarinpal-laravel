@@ -5,7 +5,7 @@ namespace Zarinpal\Drivers;
 use Exception;
 use SoapClient;
 
-class SoapDriver implements DriverInterface
+class SoapDriver
 {
     public $baseUrl;
 
@@ -19,59 +19,74 @@ class SoapDriver implements DriverInterface
      * Request driver.
      *
      * @param array $input
+     * @param bool  $extra
      *
      * @return array
      */
-    public function request($input)
+    public function request($input, $extra)
     {
-        try {
-            $response = $this->client()->PaymentRequest($input);
-            $response = (array) $response;
-        } catch (Exception $error) {
-            /**
-             * Status -301 means request method of
-             * Zarinpal\Drivers\SoapDriver class
-             * had no response
-             */
-            $response = ['Status' => -301, 'Authority' => ''];
-        }
+        $uri = ($extra) ? 'PaymentRequestWithExtra' : 'PaymentRequest';
 
-        return $response;
+        return $this->sendRequest($uri, $input);
     }
 
     /**
      * Verify driver.
      *
      * @param array $input
+     * @param bool  $extra
      *
      * @return array
      */
-    public function verify($input)
+    public function verify($input, $extra)
     {
-        try {
-            $response = $this->client()->PaymentVerification($input);
-            $response = (array) $response;
-        } catch (Exception $error) {
-            /**
-             * Status -302 means verify method of
-             * Zarinpal\Drivers\SoapDriver class
-             * had no response
-             */
-            $response = ['Status' => -302, 'RefID' => 0];
-        }
+        $uri = ($extra) ? 'PaymentVerificationWithExtra' : 'PaymentVerification';
 
-        return $response;
+        return $this->sendRequest($uri, $input);
     }
 
     /**
-     * Generate client object for driver.
+     * Refresh authority driver.
      *
-     * @return SoapClient $client
+     * @param array $input
+     *
+     * @return array
      */
-    public function client()
+    public function refreshAuthority($input)
+    {
+        return $this->sendRequest('RefreshAuthority', $input);
+    }
+
+    /**
+     * Unverified transactions driver.
+     *
+     * @param array $input
+     *
+     * @return array
+     */
+    public function unverifiedTransactions($input)
+    {
+        return $this->sendRequest('UnverifiedTransactions', $input);
+    }
+
+    /**
+     * Send requests to zarinpal.
+     *
+     * @param string $uri
+     * @param array  $input
+     *
+     * @return array
+     */
+    public function sendRequest($uri, $input)
     {
         $client = new SoapClient($this->baseUrl, ['encoding' => 'UTF-8']);
+        try {
+            $response = $client->{$uri}($input);
+            $response = (array) $response;
+        } catch (Exception $error) {
+            $response = ['Status' => -303];
+        }
 
-        return $client;
+        return $response;
     }
 }
