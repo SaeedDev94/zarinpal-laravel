@@ -125,15 +125,21 @@ ZARINPAL_DRIVER=Rest
 ...
 ```
 
-# Custom status codes definition
+# Use this lib with other frameworks
 
-there are a bunch of status codes for differents stats,
-some of them are official and you can find their definitions
-in [this repo](https://github.com/ZarinPal-Lab/Documentation-PaymentGateway), 
-others are custom:
+```php
+<?php
 
-- `Zarinpal\Zarinpal::verify[-102]`: "Status" query string is not equal to "OK"
-- `Zarinpal\Drivers\RestDriver::request[-201]`: method had no response
-- ` Zarinpal\Drivers\RestDriver::verify[-202]`: method had no response
-- `Zarinpal\Drivers\SoapDriver::request[-301]`: method had no response
-- ` Zarinpal\Drivers\SoapDriver::verify[-302]`: method had no response
+...
+use Zarinpal\Zarinpal;
+use Zarinpal\Drivers\RestDriver; // OR SoapDriver
+...
+
+...
+$merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
+$sandbox = false; // OR true
+$driver = new RestDriver($sandbox);
+$zarinpal = new Zarinpal($merchantID, $driver, $sandbox);
+// object is ready, call methods now!
+...
+```

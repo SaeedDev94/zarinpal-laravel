@@ -2,8 +2,6 @@
 
 namespace Zarinpal;
 
-use Zarinpal\Drivers\DriverInterface;
-
 class Zarinpal
 {
     public $merchantID;
@@ -11,7 +9,7 @@ class Zarinpal
     public $sandbox;
     public $response;
 
-    public function __construct($merchantID, DriverInterface $driver, $sandbox)
+    public function __construct($merchantID, $driver, $sandbox)
     {
         $this->merchantID = $merchantID;
         $this->driver = $driver;
@@ -31,15 +29,15 @@ class Zarinpal
     {
         $payment = [
             'MerchantID'  => $this->merchantID,
-            'CallbackURL' => $input['CallbackURL'],
-            'Amount'      => $input['Amount'],
-            'Description' => $input['Description'],
+            'CallbackURL' => (string) $input['CallbackURL'],
+            'Amount'      => (int) $input['Amount'],
+            'Description' => (string) $input['Description'],
         ];
         if (isset($input['Email'])) {
-            $payment['Email'] = $input['Email'];
+            $payment['Email'] = (string) $input['Email'];
         }
         if (isset($input['Mobile'])) {
-            $payment['Mobile'] = $input['Mobile'];
+            $payment['Mobile'] = (string) $input['Mobile'];
         }
         $this->response = $this->driver->request($payment);
 
@@ -73,14 +71,14 @@ class Zarinpal
         if ($input['Status'] === 'OK') {
             $payment = [
                 'MerchantID' => $this->merchantID,
-                'Authority'  => $input['Authority'],
-                'Amount'     => $input['Amount'],
+                'Authority'  => (string) $input['Authority'],
+                'Amount'     => (int) $input['Amount'],
             ];
             $this->response = $this->driver->verify($payment);
         } else {
             /**
              * Status -102 means "Status" query string
-             * is not equal to "OK" in verify method
+             * is not equal to "OK" in verify method of
              * Zarinpal\Zarinpal class
              */
             $this->response = ['Status' => -102, 'RefID' => 0];
