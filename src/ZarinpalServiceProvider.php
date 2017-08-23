@@ -9,7 +9,7 @@ use Zarinpal\Drivers\SoapDriver;
 class ZarinpalServiceProvider extends ServiceProvider
 {
     /**
-     * Register main class instance.
+     * Register main class object.
      *
      * @return void
      */

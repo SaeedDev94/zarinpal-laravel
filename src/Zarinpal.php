@@ -45,21 +45,6 @@ class Zarinpal
     }
 
     /**
-     * Redirect to payment page.
-     *
-     * @param string $authority
-     *
-     * @return redirect
-     */
-    public function redirect($authority)
-    {
-        $sub = ($this->sandbox) ? 'sandbox' : 'www';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
-
-        return redirect($url);
-    }
-
-    /**
      * Verify payment success.
      *
      * @param array $input
@@ -85,5 +70,20 @@ class Zarinpal
         }
 
         return $this;
+    }
+
+    /**
+     * Redirect to payment page.
+     *
+     * @param string $authority
+     *
+     * @return redirect
+     */
+    public function redirect($authority)
+    {
+        $sub = ($this->sandbox) ? 'sandbox' : 'www';
+        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
+
+        return redirect($url);
     }
 }

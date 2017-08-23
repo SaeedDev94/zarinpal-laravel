@@ -29,8 +29,8 @@ class SoapDriver implements DriverInterface
             $response = (array) $response;
         } catch (Exception $error) {
             /**
-             * Status -301 means request method
-             * of Zarinpal\Drivers\SoapDriver class
+             * Status -301 means request method of
+             * Zarinpal\Drivers\SoapDriver class
              * had no response
              */
             $response = ['Status' => -301, 'Authority' => ''];
@@ -53,8 +53,8 @@ class SoapDriver implements DriverInterface
             $response = (array) $response;
         } catch (Exception $error) {
             /**
-             * Status -302 means verify method
-             * of Zarinpal\Drivers\SoapDriver class
+             * Status -302 means verify method of
+             * Zarinpal\Drivers\SoapDriver class
              * had no response
              */
             $response = ['Status' => -302, 'RefID' => 0];
