@@ -26,7 +26,7 @@ class SoapDriver implements DriverInterface
     {
         try {
             $response = $this->client()->PaymentRequest($input);
-            $response = ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
+            $response = (array) $response;
         } catch (Exception $error) {
             /**
              * Status -301 means request method
@@ -50,7 +50,7 @@ class SoapDriver implements DriverInterface
     {
         try {
             $response = $this->client()->PaymentVerification($input);
-            $response = ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
+            $response = (array) $response;
         } catch (Exception $error) {
             /**
              * Status -302 means verify method

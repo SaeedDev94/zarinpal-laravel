@@ -31,8 +31,6 @@ class RestDriver implements DriverInterface
                 ['json' => $input]
             );
             $response = $response->getBody()->getContents();
-            $response = json_decode($response);
-            $response = ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         } catch (RequestException $request) {
             /**
              * Status -201 means request method
@@ -44,9 +42,8 @@ class RestDriver implements DriverInterface
                 $response = $request->getResponse();
                 $response = $response->getBody()->getContents();
             }
-            $response = json_decode($response);
-            $response = ['Status' => (int) $response->Status, 'Authority' => (string) $response->Authority ?? ''];
         }
+        $response = json_decode($response, true);
 
         return $response;
     }
@@ -67,8 +64,6 @@ class RestDriver implements DriverInterface
                 ['json' => $input]
             );
             $response = $response->getBody()->getContents();
-            $response = json_decode($response);
-            $response = ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         } catch (RequestException $request) {
             /**
              * Status -202 means verify method
@@ -80,9 +75,8 @@ class RestDriver implements DriverInterface
                 $response = $request->getResponse();
                 $response = $response->getBody()->getContents();
             }
-            $response = json_decode($response);
-            $response = ['Status' => (int) $response->Status, 'RefID' => (int) $response->RefID ?? 0];
         }
+        $response = json_decode($response, true);
 
         return $response;
     }

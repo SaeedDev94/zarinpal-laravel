@@ -132,7 +132,7 @@ some of them are official and you can find their definitions
 in [this repo](https://github.com/ZarinPal-Lab/Documentation-PaymentGateway), 
 others are custom:
 
-- `Zarinpal\Zarinpal::verify[-102]`: "zarinpal.meta" session or "Status:OK" query string missed
+- `Zarinpal\Zarinpal::verify[-102]`: "Status" query string is not equal to "OK"
 - `Zarinpal\Drivers\RestDriver::request[-201]`: method had no response
 - ` Zarinpal\Drivers\RestDriver::verify[-202]`: method had no response
 - `Zarinpal\Drivers\SoapDriver::request[-301]`: method had no response
