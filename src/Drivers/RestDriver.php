@@ -79,8 +79,8 @@ class RestDriver
      */
     public function sendRequest($uri, $input)
     {
-        $client = new Client(['base_uri' => $this->baseUrl]);
         try {
+            $client = new Client(['base_uri' => $this->baseUrl]);
             $response = $client->request('POST', $uri, ['json' => $input]);
             $response = $response->getBody()->getContents();
         } catch (RequestException $request) {

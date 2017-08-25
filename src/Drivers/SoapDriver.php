@@ -2,8 +2,8 @@
 
 namespace Zarinpal\Drivers;
 
-use Exception;
 use SoapClient;
+use Exception;
 
 class SoapDriver
 {
@@ -79,8 +79,8 @@ class SoapDriver
      */
     public function sendRequest($uri, $input)
     {
-        $client = new SoapClient($this->baseUrl, ['encoding' => 'UTF-8']);
         try {
+            $client = new SoapClient($this->baseUrl, ['encoding' => 'UTF-8']);
             $response = $client->{$uri}($input);
             $response = (array) $response;
         } catch (Exception $error) {
