@@ -118,11 +118,9 @@ class Zarinpal
     /**
      * Get unverified transactions.
      *
-     * @param array $input
-     *
      * @return Zarinpal\Zarinpal
      */
-    public function unverifiedTransactions($input)
+    public function unverifiedTransactions()
     {
         $detail = [
             'MerchantID'  => $this->merchantID,
