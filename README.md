@@ -107,7 +107,7 @@ ZARINPAL_SANDBOX=0
 
 # SoapDriver
 
-<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) is installed<br>
+<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) installed<br>
 you can also use SoapDriver instead of RestDriver for real payments,
 set `ZARINPAL_DRIVER` to `Soap` in `.env` file:
 
