@@ -161,7 +161,7 @@ use Zarinpal\Drivers\RestDriver; // OR SoapDriver
 $merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 $sandbox = false; // OR true
 $driver = new RestDriver($sandbox);
-$lang = 'fa';
+$lang = 'fa'; // OR en
 $zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 // object is ready, call methods now!
 ...
