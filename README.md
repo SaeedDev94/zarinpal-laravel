@@ -80,11 +80,12 @@ $payment = [
     'Amount'    => 5000
 ];
 $zarinpal = Zarinpal::verify($payment);
-if($zarinpal->response['Status'] === 100) {
+$status = $zarinpal->response['Status'];
+if($status === 100 || $status === 101) {
     return 'Payment was successful: '.$zarinpal->response['RefID'].
     ', Message: '.$zarinpal->response['Message'];
 }
-return 'Error! Status: '.$zarinpal->response['Status'].
+return 'Error! Status: '.$status.
 ', Message: '.$zarinpal->response['Message'];
 ...
 ```
