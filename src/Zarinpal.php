@@ -2,17 +2,21 @@
 
 namespace Zarinpal;
 
+use Zarinpal\Messages\Message;
+
 class Zarinpal
 {
     public $merchantID;
     public $driver;
+    public $lang;
     public $sandbox;
     public $response;
 
-    public function __construct($merchantID, $driver, $sandbox)
+    public function __construct($merchantID, $driver, $lang, $sandbox)
     {
         $this->merchantID = $merchantID;
         $this->driver = $driver;
+        $this->lang = $lang;
         $this->sandbox = $sandbox;
         $this->response = [];
     }
@@ -40,10 +44,11 @@ class Zarinpal
         if (isset($input['Mobile'])) {
             $payment['Mobile'] = (string) $input['Mobile'];
         }
-        if($extra) {
+        if ($extra) {
             $payment['AdditionalData'] = (string) $input['AdditionalData'];
         }
         $this->response = $this->driver->request($payment, $extra);
+        $this->setMessage();
 
         return $this;
     }
@@ -68,6 +73,7 @@ class Zarinpal
         } else {
             $this->response = ['Status' => -101];
         }
+        $this->setMessage();
 
         return $this;
     }
@@ -111,6 +117,7 @@ class Zarinpal
             'ExpireIn'    => (int) $input['ExpireIn'],
         ];
         $this->response = $this->driver->refreshAuthority($detail);
+        $this->setMessage();
 
         return $this;
     }
@@ -126,8 +133,21 @@ class Zarinpal
             'MerchantID'  => $this->merchantID,
         ];
         $this->response = $this->driver->unverifiedTransactions($detail);
+        $this->setMessage();
 
         return $this;
+    }
+
+    /**
+     * Set message of status
+     * 
+     * @return void
+     */
+    public function setMessage() {
+        $lang = $this->lang;
+        $status = (string) $this->response['Status'];
+        $message = Message::get($lang, $status);
+        $this->response['Message'] = $message;
     }
 
     /**

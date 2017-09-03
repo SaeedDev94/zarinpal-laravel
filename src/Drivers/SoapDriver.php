@@ -3,7 +3,7 @@
 namespace Zarinpal\Drivers;
 
 use SoapClient;
-use Exception;
+use SoapFault;
 
 class SoapDriver
 {
@@ -83,7 +83,7 @@ class SoapDriver
             $client = new SoapClient($this->baseUrl, ['encoding' => 'UTF-8']);
             $response = $client->{$uri}($input);
             $response = (array) $response;
-        } catch (Exception $error) {
+        } catch (SoapFault $error) {
             $response = ['Status' => -303];
         }
 

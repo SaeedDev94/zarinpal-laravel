@@ -58,7 +58,8 @@ if($zarinpal->response['Status'] === 100) {
     $authority = $zarinpal->response['Authority'];
     return $zarinpal->redirect($authority);
 }
-return 'Error! Status: '.$zarinpal->response['Status'];
+return 'Error! Status: '.$zarinpal->response['Status']
+', Message: '.$zarinpal->response['Message'];
 ...
 ```
 
@@ -80,9 +81,30 @@ $payment = [
 ];
 $zarinpal = Zarinpal::verify($payment);
 if($zarinpal->response['Status'] === 100) {
-    return 'Payment was successful: '.$zarinpal->response['RefID'];
+    return 'Payment was successful: '.$zarinpal->response['RefID']
+    ', Message: '.$zarinpal->response['Message'];
 }
-return 'Error! Status: '.$zarinpal->response['Status'];
+return 'Error! Status: '.$zarinpal->response['Status']
+', Message: '.$zarinpal->response['Message'];
+...
+```
+
+# Change message language
+
+default message language is persian but you can change it to english,
+set `ZARINPAL_LANG` to `en` in `.env` file:
+
+```
+...
+ZARINPAL_LANG=en
+...
+```
+
+back to default:
+
+```
+...
+ZARINPAL_LANG=fa
 ...
 ```
 
