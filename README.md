@@ -58,7 +58,7 @@ if($zarinpal->response['Status'] === 100) {
     $authority = $zarinpal->response['Authority'];
     return $zarinpal->redirect($authority);
 }
-return 'Error! Status: '.$zarinpal->response['Status']
+return 'Error! Status: '.$zarinpal->response['Status'].
 ', Message: '.$zarinpal->response['Message'];
 ...
 ```
@@ -81,10 +81,10 @@ $payment = [
 ];
 $zarinpal = Zarinpal::verify($payment);
 if($zarinpal->response['Status'] === 100) {
-    return 'Payment was successful: '.$zarinpal->response['RefID']
+    return 'Payment was successful: '.$zarinpal->response['RefID'].
     ', Message: '.$zarinpal->response['Message'];
 }
-return 'Error! Status: '.$zarinpal->response['Status']
+return 'Error! Status: '.$zarinpal->response['Status'].
 ', Message: '.$zarinpal->response['Message'];
 ...
 ```
@@ -161,7 +161,8 @@ use Zarinpal\Drivers\RestDriver; // OR SoapDriver
 $merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 $sandbox = false; // OR true
 $driver = new RestDriver($sandbox);
-$zarinpal = new Zarinpal($merchantID, $driver, $sandbox);
+$lang = 'fa';
+$zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 // object is ready, call methods now!
 ...
 ```
