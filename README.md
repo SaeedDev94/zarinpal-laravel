@@ -75,8 +75,8 @@ use Zarinpal\Facade\Zarinpal;
 
 ...
 $payment = [
-    'Authority' => Input::get('Authority'),
-    'Status'    => Input::get('Status'),
+    'Authority' => Input::get('Authority'), // $_GET['Authority']
+    'Status'    => Input::get('Status'),    // $_GET['Status']
     'Amount'    => 5000
 ];
 $zarinpal = Zarinpal::verify($payment);
