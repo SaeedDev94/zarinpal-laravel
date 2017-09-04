@@ -60,8 +60,7 @@ if($status === 100) {
     $authority = $zarinpal->response['Authority'];
     return $zarinpal->redirect($authority);
 }
-return 'Error, Status: '.$status.
-', Message: '.$message;
+return 'Error, Status: '.$status.', Message: '.$message;
 ...
 ```
 
@@ -86,11 +85,9 @@ $status = $zarinpal->response['Status'];
 $message = $zarinpal->response['Message'];
 if($status === 100 || $status === 101) {
     $refID = $zarinpal->response['RefID'];
-    return 'Payment was successful, RefID: '.$refID.
-    ', Message: '.$message;
+    return 'Payment was successful, RefID: '.$refID.', Message: '.$message;
 }
-return 'Error, Status: '.$status.
-', Message: '.$message;
+return 'Error, Status: '.$status.', Message: '.$message;
 ...
 ```
 
