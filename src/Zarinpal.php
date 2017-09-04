@@ -28,7 +28,7 @@ class Zarinpal
      * @param array $input
      * @param bool  $extra
      *
-     * @return Zarinpal\Zarinpal
+     * @return self
      */
     public function request($input, $extra = false)
     {
@@ -59,7 +59,7 @@ class Zarinpal
      * @param array $input
      * @param bool  $extra
      *
-     * @return Zarinpal\Zarinpal
+     * @return self
      */
     public function verify($input, $extra = false)
     {
@@ -83,7 +83,7 @@ class Zarinpal
      *
      * @param array $input
      *
-     * @return Zarinpal\Zarinpal
+     * @return self
      */
     public function requestWithExtra($input)
     {
@@ -95,7 +95,7 @@ class Zarinpal
      *
      * @param array $input
      *
-     * @return Zarinpal\Zarinpal
+     * @return self
      */
     public function verifyWithExtra($input)
     {
@@ -107,7 +107,7 @@ class Zarinpal
      *
      * @param array $input
      *
-     * @return Zarinpal\Zarinpal
+     * @return self
      */
     public function refreshAuthority($input)
     {
@@ -125,7 +125,7 @@ class Zarinpal
     /**
      * Get unverified transactions.
      *
-     * @return Zarinpal\Zarinpal
+     * @return self
      */
     public function unverifiedTransactions()
     {
@@ -155,13 +155,13 @@ class Zarinpal
      *
      * @param string $authority
      *
-     * @return redirect
+     * @return void
      */
     public function redirect($authority)
     {
         $sub = ($this->sandbox) ? 'sandbox' : 'www';
         $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
-
-        return redirect($url);
+        header('Location: '.$url);
+        exit;
     }
 }
