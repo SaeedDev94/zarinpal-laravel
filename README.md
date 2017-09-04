@@ -54,12 +54,14 @@ $payment = [
     'Mobile'      => '0933xxx7694'            // Optional
 ];
 $zarinpal = Zarinpal::request($payment);
-if($zarinpal->response['Status'] === 100) {
+$status = $zarinpal->response['Status'];
+$message = $zarinpal->response['Message'];
+if($status === 100) {
     $authority = $zarinpal->response['Authority'];
     return $zarinpal->redirect($authority);
 }
-return 'Error, Status: '.$zarinpal->response['Status'].
-', Message: '.$zarinpal->response['Message'];
+return 'Error, Status: '.$status.
+', Message: '.$message;
 ...
 ```
 
@@ -81,12 +83,14 @@ $payment = [
 ];
 $zarinpal = Zarinpal::verify($payment);
 $status = $zarinpal->response['Status'];
+$message = $zarinpal->response['Message'];
 if($status === 100 || $status === 101) {
-    return 'Payment was successful, RefID: '.$zarinpal->response['RefID'].
-    ', Message: '.$zarinpal->response['Message'];
+    $refID = $zarinpal->response['RefID'];
+    return 'Payment was successful, RefID: '.$refID.
+    ', Message: '.$message;
 }
 return 'Error, Status: '.$status.
-', Message: '.$zarinpal->response['Message'];
+', Message: '.$message;
 ...
 ```
 
