@@ -1,18 +1,18 @@
 <?php
 
-namespace Zarinpal\Drivers;
+namespace Zarinpal\Clients;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
+use SoapClient as Client;
+use SoapFault;
 
-class RestDriver
+class SoapClient
 {
     public $baseUrl;
 
     public function __construct($sandbox)
     {
         $sub = ($sandbox) ? 'sandbox' : 'www';
-        $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
+        $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';
     }
 
     /**
@@ -25,7 +25,7 @@ class RestDriver
      */
     public function request($input, $extra)
     {
-        $uri = ($extra) ? 'PaymentRequestWithExtra.json' : 'PaymentRequest.json';
+        $uri = ($extra) ? 'PaymentRequestWithExtra' : 'PaymentRequest';
 
         return $this->sendRequest($uri, $input);
     }
@@ -40,7 +40,7 @@ class RestDriver
      */
     public function verify($input, $extra)
     {
-        $uri = ($extra) ? 'PaymentVerificationWithExtra.json' : 'PaymentVerification.json';
+        $uri = ($extra) ? 'PaymentVerificationWithExtra' : 'PaymentVerification';
 
         return $this->sendRequest($uri, $input);
     }
@@ -54,7 +54,7 @@ class RestDriver
      */
     public function refreshAuthority($input)
     {
-        return $this->sendRequest('RefreshAuthority.json', $input);
+        return $this->sendRequest('RefreshAuthority', $input);
     }
 
     /**
@@ -66,7 +66,7 @@ class RestDriver
      */
     public function unverifiedTransactions($input)
     {
-        return $this->sendRequest('UnverifiedTransactions.json', $input);
+        return $this->sendRequest('UnverifiedTransactions', $input);
     }
 
     /**
@@ -80,17 +80,12 @@ class RestDriver
     public function sendRequest($uri, $input)
     {
         try {
-            $client = new Client(['base_uri' => $this->baseUrl]);
-            $response = $client->request('POST', $uri, ['json' => $input]);
-            $response = $response->getBody()->getContents();
-        } catch (RequestException $request) {
-            $response = '{"Status":-202}';
-            if ($request->hasResponse()) {
-                $response = $request->getResponse();
-                $response = $response->getBody()->getContents();
-            }
+            $client = new Client($this->baseUrl, ['encoding' => 'UTF-8']);
+            $response = $client->{$uri}($input);
+            $response = (array) $response;
+        } catch (SoapFault $error) {
+            $response = ['Status' => -303];
         }
-        $response = json_decode($response, true);
 
         return $response;
     }

@@ -3,8 +3,8 @@
 namespace Zarinpal;
 
 use Illuminate\Support\ServiceProvider;
-use Zarinpal\Drivers\RestDriver;
-use Zarinpal\Drivers\SoapDriver;
+use Zarinpal\Clients\GuzzleClient;
+use Zarinpal\Clients\SoapClient;
 
 class ZarinpalServiceProvider extends ServiceProvider
 {
@@ -20,19 +20,16 @@ class ZarinpalServiceProvider extends ServiceProvider
 
         $this->app->bind('Zarinpal\Zarinpal', function () {
             $merchantID = (string) config('zarinpal.merchantID', 'test');
-            $driver = (string) config('zarinpal.driver', 'Rest');
+            $client = (string) config('zarinpal.client', 'Guzzle');
             $lang = (string) config('zarinpal.lang', 'fa');
             $sandbox = (bool) config('zarinpal.sandbox', '0');
-            switch ($driver) {
-                case 'Soap':
-                    $driver = new SoapDriver($sandbox);
-                    break;
-                default:
-                    $driver = new RestDriver($sandbox);
-                    break;
+            if ($client === 'Soap') {
+                $client = new SoapClient($sandbox);
+            } else {
+                $client = new GuzzleClient($sandbox);
             }
 
-            return new Zarinpal($merchantID, $driver, $lang, $sandbox);
+            return new Zarinpal($merchantID, $client, $lang, $sandbox);
         });
     }
 }

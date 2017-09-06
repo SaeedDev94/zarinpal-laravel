@@ -98,15 +98,15 @@ public function verify(Zarinpal $zarinpal) {
 
 ...
 use Zarinpal\Zarinpal;
-use Zarinpal\Drivers\RestDriver; // OR SoapDriver
+use Zarinpal\Clients\GuzzleClient; // OR SoapClient
 ...
 
 ...
 $merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 $sandbox = false; // OR true
-$driver = new RestDriver($sandbox);
+$client = new GuzzleClient($sandbox);
 $lang = 'fa'; // OR en
-$zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
+$zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox);
 // object is ready, call methods now!
 ...
 ```
@@ -189,6 +189,6 @@ foreach($payments as $payment) {
 * ZARINPAL_SANDBOX:
     * use sandbox service for testing payment
     * possible values: [0, 1]
-* ZARINPAL_DRIVER:
+* ZARINPAL_CLIENT:
     * client to send requests and receive responses
-    * possible values: [Rest, Soap]
+    * possible values: [Guzzle, Soap]

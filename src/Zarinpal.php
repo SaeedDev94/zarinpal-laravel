@@ -7,15 +7,15 @@ use Zarinpal\Messages\Message;
 class Zarinpal
 {
     public $merchantID;
-    public $driver;
+    public $client;
     public $lang;
     public $sandbox;
     public $response;
 
-    public function __construct($merchantID, $driver, $lang, $sandbox)
+    public function __construct($merchantID, $client, $lang, $sandbox)
     {
         $this->merchantID = $merchantID;
-        $this->driver = $driver;
+        $this->client = $client;
         $this->lang = $lang;
         $this->sandbox = $sandbox;
         $this->response = [];
@@ -47,7 +47,7 @@ class Zarinpal
         if ($extra) {
             $payment['AdditionalData'] = (string) $input['AdditionalData'];
         }
-        $this->response = $this->driver->request($payment, $extra);
+        $this->response = $this->client->request($payment, $extra);
         $this->setMessage();
 
         return $this->response;
@@ -69,7 +69,7 @@ class Zarinpal
                 'Authority'  => (string) $input['Authority'],
                 'Amount'     => (int) $input['Amount'],
             ];
-            $this->response = $this->driver->verify($payment, $extra);
+            $this->response = $this->client->verify($payment, $extra);
         } else {
             $this->response = ['Status' => -101];
         }
@@ -116,7 +116,7 @@ class Zarinpal
             'Authority'   => (string) $input['Authority'],
             'ExpireIn'    => (int) $input['ExpireIn'],
         ];
-        $this->response = $this->driver->refreshAuthority($detail);
+        $this->response = $this->client->refreshAuthority($detail);
         $this->setMessage();
 
         return $this->response;
@@ -132,7 +132,7 @@ class Zarinpal
         $detail = [
             'MerchantID'  => $this->merchantID,
         ];
-        $this->response = $this->driver->unverifiedTransactions($detail);
+        $this->response = $this->client->unverifiedTransactions($detail);
         $this->setMessage();
 
         return $this->response;

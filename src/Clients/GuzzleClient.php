@@ -1,18 +1,18 @@
 <?php
 
-namespace Zarinpal\Drivers;
+namespace Zarinpal\Clients;
 
-use SoapClient;
-use SoapFault;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\RequestException;
 
-class SoapDriver
+class GuzzleClient
 {
     public $baseUrl;
 
     public function __construct($sandbox)
     {
         $sub = ($sandbox) ? 'sandbox' : 'www';
-        $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';
+        $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
     }
 
     /**
@@ -25,7 +25,7 @@ class SoapDriver
      */
     public function request($input, $extra)
     {
-        $uri = ($extra) ? 'PaymentRequestWithExtra' : 'PaymentRequest';
+        $uri = ($extra) ? 'PaymentRequestWithExtra.json' : 'PaymentRequest.json';
 
         return $this->sendRequest($uri, $input);
     }
@@ -40,7 +40,7 @@ class SoapDriver
      */
     public function verify($input, $extra)
     {
-        $uri = ($extra) ? 'PaymentVerificationWithExtra' : 'PaymentVerification';
+        $uri = ($extra) ? 'PaymentVerificationWithExtra.json' : 'PaymentVerification.json';
 
         return $this->sendRequest($uri, $input);
     }
@@ -54,7 +54,7 @@ class SoapDriver
      */
     public function refreshAuthority($input)
     {
-        return $this->sendRequest('RefreshAuthority', $input);
+        return $this->sendRequest('RefreshAuthority.json', $input);
     }
 
     /**
@@ -66,7 +66,7 @@ class SoapDriver
      */
     public function unverifiedTransactions($input)
     {
-        return $this->sendRequest('UnverifiedTransactions', $input);
+        return $this->sendRequest('UnverifiedTransactions.json', $input);
     }
 
     /**
@@ -80,12 +80,17 @@ class SoapDriver
     public function sendRequest($uri, $input)
     {
         try {
-            $client = new SoapClient($this->baseUrl, ['encoding' => 'UTF-8']);
-            $response = $client->{$uri}($input);
-            $response = (array) $response;
-        } catch (SoapFault $error) {
-            $response = ['Status' => -303];
+            $client = new Client(['base_uri' => $this->baseUrl]);
+            $response = $client->request('POST', $uri, ['json' => $input]);
+            $response = $response->getBody()->getContents();
+        } catch (RequestException $request) {
+            $response = '{"Status":-202}';
+            if ($request->hasResponse()) {
+                $response = $request->getResponse();
+                $response = $response->getBody()->getContents();
+            }
         }
+        $response = json_decode($response, true);
 
         return $response;
     }
