@@ -52,7 +52,8 @@ public function request(Zarinpal $zarinpal) {
     ];
     $response = $zarinpal->request($payment);
     if($response['Status'] === 100) {
-        return $zarinpal->redirect($response['Authority']);
+        $authority = $response['Authority'];
+        return $zarinpal->redirect($authority);
     }
     return 'Error,
     Status: '.$response['Status'].',
