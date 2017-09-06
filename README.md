@@ -32,7 +32,7 @@ ZARINPAL_MERCHANTID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 
 # Use it
 
-request new payment:
+**request new payment:**
 
 ```php
 <?php
@@ -61,7 +61,7 @@ public function request(Zarinpal $zarinpal) {
 ...
 ```
 
-verify the payment:
+**verify the payment:**
 
 ```php
 <?php
