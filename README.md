@@ -111,7 +111,7 @@ $zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 ...
 ```
 
-# Other avaliable configs
+# Other available configs
 
 * ZARINPAL_LANG
     * change message language
