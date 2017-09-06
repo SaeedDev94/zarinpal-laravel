@@ -121,13 +121,15 @@ dividing money in different zarinpal wallets
 // but this needs AdditionalData in payment array
 $amount = 10000;
 $divider = [];
+// 8000 in zp.1.1 wallet and
+// 2000 in zp.2.5 wallet
 $divider['Wages'] = [
     'zp.1.1' => [
-        'Amount'      => $amount/2,
+        'Amount'      => 8000,
         'Description' => 'a short description'
     ],
     'zp.2.5' => [
-        'Amount'      => $amount/2,
+        'Amount'      => 2000,
         'Description' => 'a short description'
     ]
 ];
