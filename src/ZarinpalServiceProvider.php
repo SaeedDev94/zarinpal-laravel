@@ -18,7 +18,7 @@ class ZarinpalServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__.'/config/zarinpal.php', 'zarinpal');
 
-        $this->app->singleton('Zarinpal\Zarinpal', function () {
+        $this->app->bind('Zarinpal\Zarinpal', function () {
             $merchantID = (string) config('zarinpal.merchantID', 'test');
             $driver = (string) config('zarinpal.driver', 'Rest');
             $lang = (string) config('zarinpal.lang', 'fa');
