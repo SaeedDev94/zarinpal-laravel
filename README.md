@@ -54,7 +54,9 @@ public function request(Zarinpal $zarinpal) {
     if($response['Status'] === 100) {
         return $zarinpal->redirect($response['Authority']);
     }
-    return 'Error, Status: '.$response['Status'].', Message: '.$response['Message'];
+    return 'Error,
+    Status: '.$response['Status'].',
+    Message: '.$response['Message'];
 }
 ...
 ```
@@ -78,9 +80,13 @@ public function verify(Zarinpal $zarinpal) {
     ];
     $response = $zarinpal->verify($payment);
     if($response['Status'] === 100) {
-        return 'Payment was successful, RefID: '.$response['RefID'].', Message: '.$response['Message'];
+        return 'Payment was successful,
+        RefID: '.$response['RefID'].',
+        Message: '.$response['Message'];
     }
-    return 'Error, Status: '.$response['Status'].', Message: '.$response['Message'];
+    return 'Error,
+    Status: '.$response['Status'].',
+    Message: '.$response['Message'];
 }
 ...
 ```
