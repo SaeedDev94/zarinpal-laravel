@@ -113,7 +113,7 @@ $zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 
 # Other available methods
 
-1. `requestWithExtra`
+1- `requestWithExtra`
 ```php
 ...
 // same as request method,
@@ -127,7 +127,7 @@ $response = $zarinpal->requestWithExtra($payment);
 ...
 ```
 
-2. `verifyWithExtra`
+2- `verifyWithExtra`
 ```php
 ...
 // exactly same as verify method
@@ -136,7 +136,7 @@ $response = $zarinpal->verifyWithExtra($payment);
 
 ```
 
-3. `refreshAuthority`
+3- `refreshAuthority`
 ```php
 ...
 $detail = [
@@ -147,7 +147,7 @@ $response = $zarinpal->refreshAuthority($detail);
 ...
 ```
 
-4. `unverifiedTransactions`
+4- `unverifiedTransactions`
 ```php
 ...
 $response = $zarinpal->unverifiedTransactions();
