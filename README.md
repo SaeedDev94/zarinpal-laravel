@@ -127,7 +127,8 @@ $response = $zarinpal->requestWithExtra($payment);
 ...
 ```
 
-2- `verifyWithExtra`
+2- `verifyWithExtra`:
+if you used requestWithExtra method for payment then you must verify it with this one
 ```php
 ...
 // exactly same as verify method
