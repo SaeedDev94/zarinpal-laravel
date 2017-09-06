@@ -22,12 +22,6 @@ add it to providers in "config/app.php" file:
 ...
 ```
 
-publish the config file:
-
-```
-php artisan vendor:publish --provider="Zarinpal\ZarinpalServiceProvider"
-```
-
 set 36 chars "ZARINPAL_MERCHANTID" in `.env` file:
 
 ```
@@ -44,25 +38,25 @@ request new payment:
 <?php
 
 ...
-use Zarinpal\Facade\Zarinpal;
+use Zarinpal\Zarinpal;
 ...
 
 ...
-$payment = [
-    'CallbackURL' => route('payment.verify'), // Required
-    'Amount'      => 5000,                    // Required
-    'Description' => 'a short description',   // Required
-    'Email'       => 'saeedp47@gmail.com',    // Optional
-    'Mobile'      => '0933xxx7694'            // Optional
-];
-$zarinpal = Zarinpal::request($payment);
-$status = $zarinpal->response['Status'];
-$message = $zarinpal->response['Message'];
-if($status === 100) {
-    $authority = $zarinpal->response['Authority'];
-    return $zarinpal->redirect($authority);
+public function request(Zarinpal $zarinpal) {
+    $payment = [
+        'CallbackURL' => route('payment.verify'), // Required
+        'Amount'      => 5000,                    // Required
+        'Description' => 'a short description',   // Required
+        'Email'       => 'saeedp47@gmail.com',    // Optional
+        'Mobile'      => '0933xxx7694'            // Optional
+    ];
+    $response = $zarinpal->request($payment);
+    if($response['Status'] === 100) {
+        $authority = $response['Authority'];
+        return $zarinpal->redirect($authority);
+    }
+    return 'Error, Status: '.$response['Status'].', Message: '.$response['Message'];
 }
-return 'Error, Status: '.$status.', Message: '.$message;
 ...
 ```
 
@@ -73,23 +67,22 @@ verify the payment:
 
 ...
 use Illuminate\Support\Facades\Input;
-use Zarinpal\Facade\Zarinpal;
+use Zarinpal\Zarinpal;
 ...
 
 ...
-$payment = [
-    'Authority' => Input::get('Authority'), // $_GET['Authority']
-    'Status'    => Input::get('Status'),    // $_GET['Status']
-    'Amount'    => 5000
-];
-$zarinpal = Zarinpal::verify($payment);
-$status = $zarinpal->response['Status'];
-$message = $zarinpal->response['Message'];
-if($status === 100 || $status === 101) {
-    $refID = $zarinpal->response['RefID'];
-    return 'Payment was successful, RefID: '.$refID.', Message: '.$message;
+public function verify(Zarinpal $zarinpal) {
+    $payment = [
+        'Authority' => Input::get('Authority'), // $_GET['Authority']
+        'Status'    => Input::get('Status'),    // $_GET['Status']
+        'Amount'    => 5000
+    ];
+    $response = $zarinpal->verify($payment);
+    if($response['Status'] === 100) {
+        return 'Payment was successful, RefID: '.$response['RefID'].', Message: '.$response['Message'];
+    }
+    return 'Error, Status: '.$response['Status'].', Message: '.$response['Message'];
 }
-return 'Error, Status: '.$status.', Message: '.$message;
 ...
 ```
 
