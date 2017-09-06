@@ -25,10 +25,10 @@ class Zarinpal
      * Request for new payment
      * to get "Authority" if no error occur.
      *
-     * @param array $input
-     * @param bool  $extra
+     * @param  array $input
+     * @param  bool  $extra
      *
-     * @return self
+     * @return array
      */
     public function request($input, $extra = false)
     {
@@ -50,16 +50,16 @@ class Zarinpal
         $this->response = $this->driver->request($payment, $extra);
         $this->setMessage();
 
-        return $this;
+        return $this->response;
     }
 
     /**
      * Verify payment success.
      *
-     * @param array $input
-     * @param bool  $extra
+     * @param  array $input
+     * @param  bool  $extra
      *
-     * @return self
+     * @return array
      */
     public function verify($input, $extra = false)
     {
@@ -75,15 +75,15 @@ class Zarinpal
         }
         $this->setMessage();
 
-        return $this;
+        return $this->response;
     }
 
     /**
      * Request for new payment with extra data.
      *
-     * @param array $input
+     * @param  array $input
      *
-     * @return self
+     * @return array
      */
     public function requestWithExtra($input)
     {
@@ -93,9 +93,9 @@ class Zarinpal
     /**
      * Verify payment success with extra data.
      *
-     * @param array $input
+     * @param  array $input
      *
-     * @return self
+     * @return array
      */
     public function verifyWithExtra($input)
     {
@@ -105,9 +105,9 @@ class Zarinpal
     /**
      * Refresh authority token.
      *
-     * @param array $input
+     * @param  array $input
      *
-     * @return self
+     * @return array
      */
     public function refreshAuthority($input)
     {
@@ -119,13 +119,13 @@ class Zarinpal
         $this->response = $this->driver->refreshAuthority($detail);
         $this->setMessage();
 
-        return $this;
+        return $this->response;
     }
 
     /**
      * Get unverified transactions.
      *
-     * @return self
+     * @return array
      */
     public function unverifiedTransactions()
     {
@@ -135,7 +135,7 @@ class Zarinpal
         $this->response = $this->driver->unverifiedTransactions($detail);
         $this->setMessage();
 
-        return $this;
+        return $this->response;
     }
 
     /**
@@ -153,7 +153,7 @@ class Zarinpal
     /**
      * Redirect to payment page.
      *
-     * @param string $authority
+     * @param  string $authority
      *
      * @return void
      */

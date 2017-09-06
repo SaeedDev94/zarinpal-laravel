@@ -9,13 +9,16 @@ use Zarinpal\Drivers\SoapDriver;
 class ZarinpalServiceProvider extends ServiceProvider
 {
     /**
-     * Register main class object.
+     * Register default config
+     * and main class instance.
      *
      * @return void
      */
     public function register()
     {
-        $this->app->singleton('Zarinpal', function () {
+        $this->mergeConfigFrom(__DIR__.'/config/zarinpal.php', 'zarinpal');
+
+        $this->app->singleton('Zarinpal\Zarinpal', function () {
             $merchantID = (string) config('zarinpal.merchantID', 'test');
             $driver = (string) config('zarinpal.driver', 'Rest');
             $lang = (string) config('zarinpal.lang', 'fa');
@@ -31,17 +34,5 @@ class ZarinpalServiceProvider extends ServiceProvider
 
             return new Zarinpal($merchantID, $driver, $lang, $sandbox);
         });
-    }
-
-    /**
-     * Publish the package config file.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->publishes([
-            __DIR__.'/config/zarinpal.php' => config_path('zarinpal.php'),
-        ]);
     }
 }
