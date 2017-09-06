@@ -91,64 +91,6 @@ public function verify(Zarinpal $zarinpal) {
 ...
 ```
 
-# Change message language
-
-default message language is persian but you can change it to english,
-set `ZARINPAL_LANG` to `en` in `.env` file:
-
-```
-...
-ZARINPAL_LANG=en
-...
-```
-
-back to default:
-
-```
-...
-ZARINPAL_LANG=fa
-...
-```
-
-# SandBox is for developers
-
-if you want test zarinpal payment then SandBox is for you,
-set `ZARINPAL_SANDBOX` to `1` in `.env` file:
-
-```
-...
-ZARINPAL_SANDBOX=1
-...
-```
-
-to disable it:
-
-```
-...
-ZARINPAL_SANDBOX=0
-...
-```
-
-# SoapDriver
-
-<b>NOTE:</b> make sure [SOAP](http://php.net/manual/en/book.soap.php) installed<br>
-you can also use SoapDriver instead of RestDriver for real payments,
-set `ZARINPAL_DRIVER` to `Soap` in `.env` file:
-
-```
-...
-ZARINPAL_DRIVER=Soap
-...
-```
-
-back to default:
-
-```
-...
-ZARINPAL_DRIVER=Rest
-...
-```
-
 # Use this lib with other frameworks
 
 ```php
@@ -168,3 +110,15 @@ $zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 // object is ready, call methods now!
 ...
 ```
+
+# Other avaliable configs
+
+* ZARINPAL_LANG
+    * change message language
+    * possible values: fa OR en
+* ZARINPAL_SANDBOX
+    * use sandbox service for testing payment
+    * possible values: 0 OR 1
+* ZARINPAL_DRIVER
+    * client to send requests and recive responses
+    * possible values: Rest OR Soap
