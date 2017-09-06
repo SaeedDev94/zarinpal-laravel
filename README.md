@@ -126,11 +126,11 @@ $divider = [];
 // 2000 in zp.2.5 wallet
 $divider['Wages'] = [
     'zp.1.1' => [
-        'Amount'      => 8000,
+        'Amount'      => $amount * (80/100), // 80%
         'Description' => 'a short description'
     ],
     'zp.2.5' => [
-        'Amount'      => 2000,
+        'Amount'      => $amount * (20/100), // 20%
         'Description' => 'a short description'
     ]
 ];
