@@ -111,14 +111,39 @@ $zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 ...
 ```
 
+# Other available methods
+
+`requestWithExtra`
+```php
+...
+// same as request method,
+// but this needs AdditionalData in payment array
+$payment = [
+    ...
+    'AdditionalData' => json_encode($extraData), // Required
+    ...
+];
+$response = $zarinpal->requestWithExtra($payment);
+...
+```
+
+`verifyWithExtra`
+```php
+...
+// excatly same as verify method
+$response = $zarinpal->verifyWithExtra($payment);
+...
+
+```
+
 # Other available configs
 
 * ZARINPAL_LANG:
     * change message language
-    * possible values: fa, en
+    * possible values: [fa, en]
 * ZARINPAL_SANDBOX:
     * use sandbox service for testing payment
-    * possible values: 0, 1
+    * possible values: [0, 1]
 * ZARINPAL_DRIVER:
-    * client to send requests and recive responses
-    * possible values: Rest, Soap
+    * client to send requests and receive responses
+    * possible values: [Rest, Soap]
