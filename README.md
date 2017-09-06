@@ -113,12 +113,12 @@ $zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 
 # Other available configs
 
-* ZARINPAL_LANG
+* ZARINPAL_LANG:
     * change message language
-    * possible values: fa OR en
-* ZARINPAL_SANDBOX
+    * possible values: fa, en
+* ZARINPAL_SANDBOX:
     * use sandbox service for testing payment
-    * possible values: 0 OR 1
-* ZARINPAL_DRIVER
+    * possible values: 0, 1
+* ZARINPAL_DRIVER:
     * client to send requests and recive responses
-    * possible values: Rest OR Soap
+    * possible values: Rest, Soap
