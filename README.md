@@ -184,7 +184,7 @@ foreach($payments as $payment) {
 # Other available configs
 
 * ZARINPAL_LANG:
-    * change message language
+    * messages language
     * possible values: [fa, en]
 * ZARINPAL_SANDBOX:
     * use sandbox service for testing payment
