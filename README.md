@@ -136,7 +136,8 @@ $response = $zarinpal->verifyWithExtra($payment);
 
 ```
 
-3- `refreshAuthority`
+3- `refreshAuthority`:
+extends authority token life time
 ```php
 ...
 $detail = [
@@ -147,10 +148,19 @@ $response = $zarinpal->refreshAuthority($detail);
 ...
 ```
 
-4- `unverifiedTransactions`
+4- `unverifiedTransactions`:
+get successful payments which you didn't call verify method on them
 ```php
 ...
 $response = $zarinpal->unverifiedTransactions();
+$payments = json_decode($response['Authorities']);
+foreach($payments as $payment) {
+    $authority = $payment->Authority;
+    $amount = $payment->Amount;
+    $channel = $payment->Channel;
+    $date = $payment->Date;
+    ...
+}
 ...
 ```
 
