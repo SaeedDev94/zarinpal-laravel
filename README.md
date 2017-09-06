@@ -130,10 +130,19 @@ $response = $zarinpal->requestWithExtra($payment);
 `verifyWithExtra`
 ```php
 ...
-// excatly same as verify method
+// exactly same as verify method
 $response = $zarinpal->verifyWithExtra($payment);
 ...
 
+```
+
+`refreshAuthority`
+```php
+$detail = [
+    'Authority' => $authority, // Required
+    'ExpireIn'  => 7200        // Required (in secodns)
+];
+$response = $zarinpal->refreshAuthority($detail);
 ```
 
 # Other available configs
