@@ -113,14 +113,28 @@ $zarinpal = new Zarinpal($merchantID, $driver, $lang, $sandbox);
 
 # Other available methods
 
-1- `requestWithExtra`
+1- `requestWithExtra`:
+dividing money in different zarinpal wallets
 ```php
 ...
 // same as request method,
 // but this needs AdditionalData in payment array
+$amount = 10000;
+$divider = [];
+$divider['Wages'] = [
+    'zp.1.1' => [
+        'Amount'      => $amount/2,
+        'Description' => 'a short description'
+    ],
+    'zp.2.5' => [
+        'Amount'      => $amount/2,
+        'Description' => 'a short description'
+    ]
+];
 $payment = [
     ...
-    'AdditionalData' => json_encode($extraData), // Required
+    'Amount'         => $amount,               // Required
+    'AdditionalData' => json_encode($divider), // Required
     ...
 ];
 $response = $zarinpal->requestWithExtra($payment);
@@ -138,7 +152,7 @@ $response = $zarinpal->verifyWithExtra($payment);
 ```
 
 3- `refreshAuthority`:
-extends authority token life time
+extends authority token lifetime
 ```php
 ...
 $detail = [
