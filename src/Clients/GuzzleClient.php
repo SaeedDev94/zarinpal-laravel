@@ -16,10 +16,10 @@ class GuzzleClient
     }
 
     /**
-     * Request driver.
+     * Request new payment.
      *
-     * @param array $input
-     * @param bool  $extra
+     * @param  array $input
+     * @param  bool  $extra
      *
      * @return array
      */
@@ -31,10 +31,10 @@ class GuzzleClient
     }
 
     /**
-     * Verify driver.
+     * Verify the payment.
      *
-     * @param array $input
-     * @param bool  $extra
+     * @param  array $input
+     * @param  bool  $extra
      *
      * @return array
      */
@@ -46,9 +46,9 @@ class GuzzleClient
     }
 
     /**
-     * Refresh authority driver.
+     * Extends authority token lifetime.
      *
-     * @param array $input
+     * @param  array $input
      *
      * @return array
      */
@@ -58,9 +58,9 @@ class GuzzleClient
     }
 
     /**
-     * Unverified transactions driver.
+     * Get unverified transactions.
      *
-     * @param array $input
+     * @param  array $input
      *
      * @return array
      */
@@ -70,10 +70,11 @@ class GuzzleClient
     }
 
     /**
-     * Send requests to zarinpal.
+     * Send requests to zarinpal
+     * and receive responses.
      *
-     * @param string $uri
-     * @param array  $input
+     * @param  string $uri
+     * @param  array  $input
      *
      * @return array
      */

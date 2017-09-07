@@ -7,8 +7,8 @@ class Message
     /**
      * Get message of status
      *
-     * @param string $lang
-     * @param int    $status
+     * @param  string $lang
+     * @param  int    $status
      *
      * @return string
      */

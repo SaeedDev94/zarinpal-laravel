@@ -103,7 +103,7 @@ class Zarinpal
     }
 
     /**
-     * Refresh authority token.
+     * Extends authority token lifetime.
      *
      * @param  array $input
      *
