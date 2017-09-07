@@ -1,8 +1,8 @@
 # **Zarinpal payment for Laravel Framework**
 
-> [Use this lib with other frameworks](#use-this-lib-with-other-frameworks)
-> [Other available methods](#other-available-methods)
-> [Other available configs](#other-available-configs)
+> [Use this lib with other frameworks](#use-this-lib-with-other-frameworks)<br>
+> [Other available methods](#other-available-methods)<br>
+> [Other available configs](#other-available-configs)<br>
 
 install it:
 
