@@ -1,4 +1,4 @@
-# Zarinpal payment for Laravel Framework
+# **Zarinpal payment for Laravel Framework**
 
 [JUMP TO: Use this lib with other frameworks](#use-this-lib-with-other-frameworks)
 
@@ -30,7 +30,7 @@ ZARINPAL_MERCHANTID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 ...
 ```
 
-# Use it
+# **Use it**
 
 **request new payment:**
 
@@ -92,7 +92,7 @@ public function verify(Zarinpal $zarinpal) {
 ...
 ```
 
-# Use this lib with other frameworks
+# **Use this lib with other frameworks**
 
 ```php
 <?php
@@ -112,7 +112,7 @@ $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox);
 ...
 ```
 
-# Other available methods
+# **Other available methods**
 
 1- `requestWithExtra`:
 dividing money in different zarinpal wallets
@@ -182,7 +182,7 @@ foreach($payments as $payment) {
 ...
 ```
 
-# Other available configs
+# **Other available configs**
 
 * ZARINPAL_LANG:
     * messages language
@@ -193,3 +193,9 @@ foreach($payments as $payment) {
 * ZARINPAL_CLIENT:
     * client to send requests and receive responses
     * possible values: [Guzzle, Soap]
+
+# **Final note**
+
+This lib and its methods written based on
+[official zarinpal documents](https://github.com/ZarinPal-Lab/Documentation-PaymentGateway),
+so reading the docs might be helpful
