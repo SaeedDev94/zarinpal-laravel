@@ -6,7 +6,7 @@
 
 install it:
 
-```
+```shell
 composer require saeedpooyanfar/zarinpal
 ```
 
