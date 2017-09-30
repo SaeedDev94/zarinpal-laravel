@@ -28,7 +28,7 @@ class ZarinpalServiceProvider extends ServiceProvider
             } else {
                 $client = new GuzzleClient($sandbox);
             }
-            $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox);
+            $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, true);
 
             return $zarinpal;
         });
