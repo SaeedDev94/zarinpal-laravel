@@ -173,7 +173,6 @@ class Zarinpal
     public function redirect($authority)
     {
         $url = $this->getRedirectUrl($authority);
-        header('Location: '.$url);
-        exit;
+        return redirect($url);
     }
 }
