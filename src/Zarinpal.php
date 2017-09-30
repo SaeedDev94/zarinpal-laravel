@@ -161,7 +161,6 @@ class Zarinpal
     {
         $sub = ($this->sandbox) ? 'sandbox' : 'www';
         $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
-        header('Location: '.$url);
-        exit;
+        return redirect($url);
     }
 }
