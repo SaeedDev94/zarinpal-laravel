@@ -151,6 +151,19 @@ class Zarinpal
     }
 
     /**
+     * Get generated redirect url
+     *
+     * @param  string $authority
+     *
+     * @return void
+     */
+    public function getRedirectUrl($authority)
+    {
+        $sub = ($this->sandbox) ? 'sandbox' : 'www';
+        return 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
+    }
+
+    /**
      * Redirect to payment page.
      *
      * @param  string $authority
@@ -159,8 +172,7 @@ class Zarinpal
      */
     public function redirect($authority)
     {
-        $sub = ($this->sandbox) ? 'sandbox' : 'www';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
+        $url = $this->getRedirectUrl($authority);
         return redirect($url);
     }
 }

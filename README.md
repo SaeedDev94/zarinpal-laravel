@@ -64,6 +64,13 @@ public function request(Zarinpal $zarinpal) {
 ...
 ```
 
+If you have other redirection methods you can use:
+```php
+$zarinpal->getRedirectUrl($authority)
+```
+to get the redirect url as a string.
+
+
 **verify the payment:**
 
 ```php
