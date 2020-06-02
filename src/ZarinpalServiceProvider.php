@@ -23,12 +23,13 @@ class ZarinpalServiceProvider extends ServiceProvider
             $client = (string) config('zarinpal.client', 'Guzzle');
             $lang = (string) config('zarinpal.lang', 'fa');
             $sandbox = (bool) config('zarinpal.sandbox', '0');
+            $zaringate = (bool) config('zarinpal.zaringate', '0');
             if ($client === 'Soap') {
                 $client = new SoapClient($sandbox);
             } else {
                 $client = new GuzzleClient($sandbox);
             }
-            $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, true);
+            $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, $zaringate, true);
 
             return $zarinpal;
         });
