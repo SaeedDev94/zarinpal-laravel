@@ -1,8 +1,8 @@
 # **Zarinpal payment for Laravel Framework**
 
-> [Use this lib with other frameworks](#use-this-lib-with-other-frameworks)<br>
-> [Other available methods](#other-available-methods)<br>
-> [Other available configs](#other-available-configs)<br>
+- [Use this lib with other frameworks](#use-this-lib-with-other-frameworks)<br>
+- [Other available methods](#other-available-methods)<br>
+- [Other available configs](#other-available-configs)<br>
 
 install it:
 
@@ -118,9 +118,10 @@ use Zarinpal\Clients\GuzzleClient; // OR SoapClient
 ...
 $merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 $sandbox = false; // OR true
+$zarinGate = false; // OR true
 $client = new GuzzleClient($sandbox);
 $lang = 'fa'; // OR en
-$zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox);
+$zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, $zarinGate);
 // object is ready, call methods now!
 ...
 ```
@@ -203,6 +204,9 @@ foreach($payments as $payment) {
 * ZARINPAL_SANDBOX:
     * use sandbox service for testing payment
     * possible values: [0, 1]
+* ZARINPAL_ZARINGATE:
+    * use zarringate for redirect urls
+    * possible values: [0, 1]    
 * ZARINPAL_CLIENT:
     * client to send requests and receive responses
     * possible values: [Guzzle, Soap]

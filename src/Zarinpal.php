@@ -10,15 +10,17 @@ class Zarinpal
     public $client;
     public $lang;
     public $sandbox;
+    public $zarinGate;
     public $laravel;
     public $response;
 
-    public function __construct($merchantID, $client, $lang, $sandbox, $laravel = false)
+    public function __construct($merchantID, $client, $lang, $sandbox, $zarinGate, $laravel = false)
     {
         $this->merchantID = $merchantID;
         $this->client = $client;
         $this->lang = $lang;
         $this->sandbox = $sandbox;
+        $this->zarinGate = $zarinGate;
         $this->laravel = $laravel;
         $this->response = [];
     }
@@ -162,7 +164,8 @@ class Zarinpal
     public function getRedirectUrl($authority)
     {
         $sub = ($this->sandbox) ? 'sandbox' : 'www';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority;
+        $zarinGate = ($this->zarinGate) ? '/ZarinGate' : '';
+        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority.$zarinGate;
 
         return $url;
     }
