@@ -10,20 +10,6 @@ install it:
 composer require saeedpooyanfar/zarinpal
 ```
 
-add it to providers in "config/app.php" file:
-
-```php
-<?php
-
-...
-'providers' => [
-    ...
-    Zarinpal\ZarinpalServiceProvider::class,
-    ...
-],
-...
-```
-
 set 36 chars "ZARINPAL_MERCHANTID" in `.env` file:
 
 ```

@@ -7,12 +7,12 @@ class BaseClient
     /**
      * Request new payment.
      *
-     * @param  array $input
+     * @param  array  $input
      * @param  bool  $extra
      *
      * @return array
      */
-    public function request($input, $extra)
+    public function request(array $input, bool $extra)
     {
         $uri = ($extra) ? 'PaymentRequestWithExtra' : 'PaymentRequest';
 
@@ -22,12 +22,12 @@ class BaseClient
     /**
      * Verify the payment.
      *
-     * @param  array $input
+     * @param  array  $input
      * @param  bool  $extra
      *
      * @return array
      */
-    public function verify($input, $extra)
+    public function verify(array $input, bool $extra)
     {
         $uri = ($extra) ? 'PaymentVerificationWithExtra' : 'PaymentVerification';
 
@@ -37,11 +37,11 @@ class BaseClient
     /**
      * Extends authority token lifetime.
      *
-     * @param  array $input
+     * @param  array  $input
      *
      * @return array
      */
-    public function refreshAuthority($input)
+    public function refreshAuthority(array $input)
     {
         return $this->sendRequest('RefreshAuthority', $input);
     }
@@ -49,11 +49,11 @@ class BaseClient
     /**
      * Get unverified transactions.
      *
-     * @param  array $input
+     * @param  array  $input
      *
      * @return array
      */
-    public function unverifiedTransactions($input)
+    public function unverifiedTransactions(array $input)
     {
         return $this->sendRequest('UnverifiedTransactions', $input);
     }

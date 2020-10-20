@@ -3,18 +3,35 @@
 namespace Zarinpal;
 
 use Zarinpal\Messages\Message;
+use Zarinpal\Clients\BaseClient;
 
 class Zarinpal
 {
-    public $merchantID;
-    public $client;
-    public $lang;
-    public $sandbox;
-    public $zarinGate;
-    public $laravel;
-    public $response;
+    public string $merchantID;
+    public BaseClient $client;
+    public string $lang;
+    public bool $sandbox;
+    public bool $zarinGate;
+    public bool $laravel;
+    public array $response;
 
-    public function __construct($merchantID, $client, $lang, $sandbox, $zarinGate, $laravel = false)
+    /**
+     * Zarinpal constructor.
+     * @param string $merchantID
+     * @param BaseClient  $client
+     * @param string $lang
+     * @param bool $sandbox
+     * @param bool $zarinGate
+     * @param false  $laravel
+     */
+    public function __construct(
+        string $merchantID,
+        BaseClient $client,
+        string $lang,
+        bool $sandbox,
+        bool $zarinGate,
+        bool $laravel = false
+    )
     {
         $this->merchantID = $merchantID;
         $this->client = $client;
@@ -29,12 +46,12 @@ class Zarinpal
      * Request for new payment
      * to get "Authority" if no error occur.
      *
-     * @param  array $input
+     * @param  array  $input
      * @param  bool  $extra
      *
      * @return array
      */
-    public function request($input, $extra = false)
+    public function request(array $input, $extra = false)
     {
         $payment = [
             'MerchantID'  => $this->merchantID,
@@ -60,12 +77,12 @@ class Zarinpal
     /**
      * Verify payment success.
      *
-     * @param  array $input
+     * @param  array  $input
      * @param  bool  $extra
      *
      * @return array
      */
-    public function verify($input, $extra = false)
+    public function verify(array $input, $extra = false)
     {
         if ($input['Status'] === 'OK') {
             $payment = [
@@ -85,11 +102,11 @@ class Zarinpal
     /**
      * Request for new payment with extra data.
      *
-     * @param  array $input
+     * @param  array  $input
      *
      * @return array
      */
-    public function requestWithExtra($input)
+    public function requestWithExtra(array $input)
     {
         return $this->request($input, true);
     }
@@ -101,7 +118,7 @@ class Zarinpal
      *
      * @return array
      */
-    public function verifyWithExtra($input)
+    public function verifyWithExtra(array $input)
     {
         return $this->verify($input, true);
     }
@@ -109,11 +126,11 @@ class Zarinpal
     /**
      * Extends authority token lifetime.
      *
-     * @param  array $input
+     * @param  array  $input
      *
      * @return array
      */
-    public function refreshAuthority($input)
+    public function refreshAuthority(array $input)
     {
         $detail = [
             'MerchantID'  => $this->merchantID,
@@ -157,27 +174,25 @@ class Zarinpal
     /**
      * Get generated redirect url
      *
-     * @param  string $authority
+     * @param  string  $authority
      *
      * @return string
      */
-    public function getRedirectUrl($authority)
+    public function getRedirectUrl(string $authority)
     {
         $sub = ($this->sandbox) ? 'sandbox' : 'www';
         $zarinGate = ($this->zarinGate) ? '/ZarinGate' : '';
-        $url = 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority.$zarinGate;
-
-        return $url;
+        return 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority.$zarinGate;
     }
 
     /**
      * Redirect to payment page.
      *
-     * @param  string $authority
+     * @param  string  $authority
      *
      * @return mixed
      */
-    public function redirect($authority)
+    public function redirect(string $authority)
     {
         $url = $this->getRedirectUrl($authority);
         if($this->laravel) {

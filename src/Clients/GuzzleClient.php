@@ -3,11 +3,12 @@
 namespace Zarinpal\Clients;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 
 class GuzzleClient extends BaseClient
 {
-    public $baseUrl;
+    public string $baseUrl;
 
     public function __construct($sandbox)
     {
@@ -19,12 +20,13 @@ class GuzzleClient extends BaseClient
      * Send requests to zarinpal
      * and receive responses.
      *
-     * @param  string $uri
+     * @param  string  $uri
      * @param  array  $input
      *
      * @return array
+     * @throws RequestException|GuzzleException
      */
-    public function sendRequest($uri, $input)
+    public function sendRequest(string $uri, array $input)
     {
         $uri .= '.json';
         try {

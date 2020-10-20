@@ -7,7 +7,7 @@ use SoapFault;
 
 class SoapClient extends BaseClient
 {
-    public $baseUrl;
+    public string $baseUrl;
 
     public function __construct($sandbox)
     {
@@ -19,12 +19,12 @@ class SoapClient extends BaseClient
      * Send requests to zarinpal
      * and receive responses.
      *
-     * @param  string $uri
+     * @param  string  $uri
      * @param  array  $input
      *
      * @return array
      */
-    public function sendRequest($uri, $input)
+    public function sendRequest(string $uri, array $input)
     {
         try {
             $client = new Client($this->baseUrl, ['encoding' => 'UTF-8']);
