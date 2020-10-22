@@ -7,7 +7,7 @@ use SoapFault;
 
 class SoapClient extends BaseClient
 {
-    public string $baseUrl;
+    public $baseUrl;
 
     public function __construct($sandbox)
     {

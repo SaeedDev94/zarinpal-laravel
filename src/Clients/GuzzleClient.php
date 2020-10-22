@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\RequestException;
 
 class GuzzleClient extends BaseClient
 {
-    public string $baseUrl;
+    public $baseUrl;
 
     public function __construct($sandbox)
     {

@@ -7,13 +7,13 @@ use Zarinpal\Clients\BaseClient;
 
 class Zarinpal
 {
-    public string $merchantID;
-    public BaseClient $client;
-    public string $lang;
-    public bool $sandbox;
-    public bool $zarinGate;
-    public bool $laravel;
-    public array $response;
+    public $merchantID;
+    public $client;
+    public $lang;
+    public $sandbox;
+    public $zarinGate;
+    public $laravel;
+    public $response;
 
     /**
      * Zarinpal constructor.
