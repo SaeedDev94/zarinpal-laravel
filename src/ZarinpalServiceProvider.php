@@ -17,19 +17,17 @@ class ZarinpalServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__.'/config/zarinpal.php', 'zarinpal');
+        $this->app->instance(Zarinpal::class, $this->getInstance());
+    }
 
-        $this->app->bind('Zarinpal\Zarinpal', function () {
-            $merchantID = (string) config('zarinpal.merchantID', 'test');
-            $client = (string) config('zarinpal.client', 'Guzzle');
-            $lang = (string) config('zarinpal.lang', 'fa');
-            $sandbox = (bool) config('zarinpal.sandbox', '0');
-            $zaringate = (bool) config('zarinpal.zaringate', '0');
-            if ($client === 'Soap') {
-                $client = new SoapClient($sandbox);
-            } else {
-                $client = new GuzzleClient($sandbox);
-            }
-            return new Zarinpal($merchantID, $client, $lang, $sandbox, $zaringate, true);
-        });
+    private function getInstance()
+    {
+        $merchantID = (string) config('zarinpal.merchantID', 'test');
+        $clientType = (string) config('zarinpal.client', 'Guzzle');
+        $lang = (string) config('zarinpal.lang', 'fa');
+        $sandbox = (bool) config('zarinpal.sandbox', '0');
+        $zaringate = (bool) config('zarinpal.zaringate', '0');
+        $client = ($clientType === 'Soap') ? new SoapClient($sandbox) : new GuzzleClient($sandbox);
+        return new Zarinpal($merchantID, $client, $lang, $sandbox, $zaringate, true);
     }
 }
