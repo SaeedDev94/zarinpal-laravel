@@ -3,7 +3,7 @@
 namespace Zarinpal;
 
 use Zarinpal\Messages\Message;
-use Zarinpal\Clients\BaseClient;
+use Zarinpal\Clients\IBaseClient;
 
 class Zarinpal
 {
@@ -18,7 +18,7 @@ class Zarinpal
     /**
      * Zarinpal constructor.
      * @param string $merchantID
-     * @param BaseClient $client
+     * @param IBaseClient $client
      * @param string $lang
      * @param bool $sandbox
      * @param bool $zarinGate
@@ -26,7 +26,7 @@ class Zarinpal
      */
     public function __construct(
         string $merchantID,
-        BaseClient $client,
+        IBaseClient $client,
         string $lang,
         bool $sandbox,
         bool $zarinGate,
@@ -45,17 +45,17 @@ class Zarinpal
      * Request for new payment
      * to get "Authority" if no error occur.
      *
-     * @param  array  $input
-     * @param  bool  $extra
+     * @param array $input
+     * @param bool $extra
      *
      * @return array
      */
     public function request(array $input, $extra = false)
     {
         $payment = [
-            'MerchantID'  => $this->merchantID,
+            'MerchantID' => $this->merchantID,
             'CallbackURL' => (string) $input['CallbackURL'],
-            'Amount'      => (int) $input['Amount'],
+            'Amount' => (int) $input['Amount'],
             'Description' => (string) $input['Description'],
         ];
         if (isset($input['Email'])) {
@@ -76,8 +76,8 @@ class Zarinpal
     /**
      * Verify payment success.
      *
-     * @param  array  $input
-     * @param  bool  $extra
+     * @param array $input
+     * @param bool $extra
      *
      * @return array
      */
@@ -86,8 +86,8 @@ class Zarinpal
         if ($input['Status'] === 'OK') {
             $payment = [
                 'MerchantID' => $this->merchantID,
-                'Authority'  => (string) $input['Authority'],
-                'Amount'     => (int) $input['Amount'],
+                'Authority' => (string) $input['Authority'],
+                'Amount' => (int) $input['Amount'],
             ];
             $this->response = $this->client->verify($payment, $extra);
         } else {
@@ -101,7 +101,7 @@ class Zarinpal
     /**
      * Request for new payment with extra data.
      *
-     * @param  array  $input
+     * @param array $input
      *
      * @return array
      */
@@ -113,7 +113,7 @@ class Zarinpal
     /**
      * Verify payment success with extra data.
      *
-     * @param  array $input
+     * @param array $input
      *
      * @return array
      */
@@ -125,16 +125,16 @@ class Zarinpal
     /**
      * Extends authority token lifetime.
      *
-     * @param  array  $input
+     * @param array $input
      *
      * @return array
      */
     public function refreshAuthority(array $input)
     {
         $detail = [
-            'MerchantID'  => $this->merchantID,
-            'Authority'   => (string) $input['Authority'],
-            'ExpireIn'    => (int) $input['ExpireIn'],
+            'MerchantID' => $this->merchantID,
+            'Authority' => (string) $input['Authority'],
+            'ExpireIn' => (int) $input['ExpireIn'],
         ];
         $this->response = $this->client->refreshAuthority($detail);
         $this->setMessage();
@@ -150,7 +150,7 @@ class Zarinpal
     public function unverifiedTransactions()
     {
         $detail = [
-            'MerchantID'  => $this->merchantID,
+            'MerchantID' => $this->merchantID,
         ];
         $this->response = $this->client->unverifiedTransactions($detail);
         $this->setMessage();
@@ -163,7 +163,8 @@ class Zarinpal
      *
      * @return void
      */
-    public function setMessage() {
+    public function setMessage()
+    {
         $lang = $this->lang;
         $status = (string) $this->response['Status'];
         $message = Message::get($lang, $status);
@@ -173,7 +174,7 @@ class Zarinpal
     /**
      * Get generated redirect url
      *
-     * @param  string  $authority
+     * @param string $authority
      *
      * @return string
      */
@@ -181,23 +182,23 @@ class Zarinpal
     {
         $sub = ($this->sandbox) ? 'sandbox' : 'www';
         $zarinGate = ($this->zarinGate) ? '/ZarinGate' : '';
-        return 'https://'.$sub.'.zarinpal.com/pg/StartPay/'.$authority.$zarinGate;
+        return 'https://' . $sub . '.zarinpal.com/pg/StartPay/' . $authority . $zarinGate;
     }
 
     /**
      * Redirect to payment page.
      *
-     * @param  string  $authority
+     * @param string $authority
      *
      * @return mixed
      */
     public function redirect(string $authority)
     {
         $url = $this->getRedirectUrl($authority);
-        if($this->laravel) {
+        if ($this->laravel) {
             return redirect($url);
         }
-        header('Location: '.$url);
+        header('Location: ' . $url);
         exit;
     }
 }

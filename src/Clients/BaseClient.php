@@ -7,8 +7,8 @@ trait BaseClient
     /**
      * Request new payment.
      *
-     * @param  array  $input
-     * @param  bool  $extra
+     * @param array $input
+     * @param bool $extra
      *
      * @return array
      */
@@ -22,8 +22,8 @@ trait BaseClient
     /**
      * Verify the payment.
      *
-     * @param  array  $input
-     * @param  bool  $extra
+     * @param array $input
+     * @param bool $extra
      *
      * @return array
      */
@@ -37,7 +37,7 @@ trait BaseClient
     /**
      * Extends authority token lifetime.
      *
-     * @param  array  $input
+     * @param array $input
      *
      * @return array
      */
@@ -49,7 +49,7 @@ trait BaseClient
     /**
      * Get unverified transactions.
      *
-     * @param  array  $input
+     * @param array $input
      *
      * @return array
      */

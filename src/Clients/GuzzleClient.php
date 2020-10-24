@@ -6,12 +6,12 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 
-class GuzzleClient
+class GuzzleClient implements IBaseClient
 {
     public function __construct($sandbox)
     {
         $sub = ($sandbox) ? 'sandbox' : 'www';
-        $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
+        $this->baseUrl = 'https://' . $sub . '.zarinpal.com/pg/rest/WebGate/';
     }
 
     public $baseUrl;
@@ -22,8 +22,8 @@ class GuzzleClient
      * Send requests to zarinpal
      * and receive responses.
      *
-     * @param  string  $uri
-     * @param  array  $input
+     * @param string $uri
+     * @param array $input
      *
      * @return array
      * @throws RequestException|GuzzleException
