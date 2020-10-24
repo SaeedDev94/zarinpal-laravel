@@ -18,11 +18,11 @@ class Zarinpal
     /**
      * Zarinpal constructor.
      * @param string $merchantID
-     * @param BaseClient  $client
+     * @param BaseClient $client
      * @param string $lang
      * @param bool $sandbox
      * @param bool $zarinGate
-     * @param false  $laravel
+     * @param bool $laravel
      */
     public function __construct(
         string $merchantID,
@@ -31,8 +31,7 @@ class Zarinpal
         bool $sandbox,
         bool $zarinGate,
         bool $laravel = false
-    )
-    {
+    ) {
         $this->merchantID = $merchantID;
         $this->client = $client;
         $this->lang = $lang;
@@ -161,7 +160,7 @@ class Zarinpal
 
     /**
      * Set message of status
-     * 
+     *
      * @return void
      */
     public function setMessage() {
