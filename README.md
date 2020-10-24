@@ -10,6 +10,12 @@ install it:
 composer require saeedpooyanfar/zarinpal
 ```
 
+laravel service provider should register automatically, if not, register `Zarinpal\ZarinpalServiceProvider::class` manually or run:
+
+```shell
+composer dump-autoload
+``` 
+
 set 36 chars "ZARINPAL_MERCHANTID" in `.env` file:
 
 ```
@@ -67,15 +73,15 @@ to get the redirect url as a string.
 <?php
 
 ...
-use Illuminate\Support\Facades\Input;
+use use Illuminate\Http\Request;
 use Zarinpal\Zarinpal;
 ...
 
 ...
-public function verify(Zarinpal $zarinpal) {
+public function verify(Request $request, Zarinpal $zarinpal) {
     $payment = [
-        'Authority' => Input::get('Authority'), // $_GET['Authority']
-        'Status'    => Input::get('Status'),    // $_GET['Status']
+        'Authority' => $request->input('Authority'), // $_GET['Authority']
+        'Status'    => $request->input('Status'),    // $_GET['Status']
         'Amount'    => 5000
     ];
     $response = $zarinpal->verify($payment);
