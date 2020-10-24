@@ -6,15 +6,17 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 
-class GuzzleClient extends BaseClient
+class GuzzleClient
 {
-    public $baseUrl;
-
     public function __construct($sandbox)
     {
         $sub = ($sandbox) ? 'sandbox' : 'www';
         $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/rest/WebGate/';
     }
+
+    public $baseUrl;
+
+    use BaseClient;
 
     /**
      * Send requests to zarinpal

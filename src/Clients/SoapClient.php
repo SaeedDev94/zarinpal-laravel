@@ -5,15 +5,17 @@ namespace Zarinpal\Clients;
 use SoapClient as Client;
 use SoapFault;
 
-class SoapClient extends BaseClient
+class SoapClient
 {
-    public $baseUrl;
-
     public function __construct($sandbox)
     {
         $sub = ($sandbox) ? 'sandbox' : 'www';
         $this->baseUrl = 'https://'.$sub.'.zarinpal.com/pg/services/WebGate/wsdl';
     }
+
+    public $baseUrl;
+
+    use BaseClient;
 
     /**
      * Send requests to zarinpal

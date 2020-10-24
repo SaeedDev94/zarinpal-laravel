@@ -2,7 +2,7 @@
 
 namespace Zarinpal\Clients;
 
-class BaseClient
+trait BaseClient
 {
     /**
      * Request new payment.
