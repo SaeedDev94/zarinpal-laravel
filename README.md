@@ -73,7 +73,7 @@ to get the redirect url as a string.
 <?php
 
 ...
-use use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 use Zarinpal\Zarinpal;
 ...
 
