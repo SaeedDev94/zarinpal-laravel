@@ -7,12 +7,12 @@ class Message
     /**
      * Get message of status
      *
-     * @param  string $lang
-     * @param  int    $status
+     * @param  string  $lang
+     * @param  int  $status
      *
      * @return string
      */
-    public static function get($lang, $status) {
+    public static function get(string $lang, int $status) {
         $message = '';
         $path = __DIR__.'/lang/'.$lang.'.php';
         if(file_exists($path)) {
