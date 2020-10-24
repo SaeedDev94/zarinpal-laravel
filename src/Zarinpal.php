@@ -3,7 +3,7 @@
 namespace Zarinpal;
 
 use Zarinpal\Messages\Message;
-use Zarinpal\Clients\IBaseClient;
+use Zarinpal\Clients\IClient;
 
 class Zarinpal
 {
@@ -18,7 +18,7 @@ class Zarinpal
     /**
      * Zarinpal constructor.
      * @param string $merchantID
-     * @param IBaseClient $client
+     * @param IClient $client
      * @param string $lang
      * @param bool $sandbox
      * @param bool $zarinGate
@@ -26,7 +26,7 @@ class Zarinpal
      */
     public function __construct(
         string $merchantID,
-        IBaseClient $client,
+        IClient $client,
         string $lang,
         bool $sandbox,
         bool $zarinGate,

@@ -6,7 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 
-class GuzzleClient implements IBaseClient
+class GuzzleClient implements IClient
 {
     public function __construct($sandbox)
     {

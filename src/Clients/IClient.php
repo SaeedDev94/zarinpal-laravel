@@ -2,7 +2,7 @@
 
 namespace Zarinpal\Clients;
 
-interface IBaseClient
+interface IClient
 {
     /**
      * Request new payment.

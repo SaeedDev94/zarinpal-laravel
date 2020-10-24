@@ -5,7 +5,7 @@ namespace Zarinpal\Clients;
 use SoapClient as Client;
 use SoapFault;
 
-class SoapClient implements IBaseClient
+class SoapClient implements IClient
 {
     public function __construct($sandbox)
     {
