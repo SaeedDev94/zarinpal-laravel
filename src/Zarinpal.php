@@ -33,8 +33,8 @@ class Zarinpal
         string $lang,
         bool $sandbox,
         bool $zarinGate,
-        bool $laravel = false,
-        string $zarinGatePSP = ''
+        string $zarinGatePSP = '',
+        bool $laravel = false
     ) {
         $this->merchantID = $merchantID;
         $this->client = $client;

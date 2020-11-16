@@ -29,6 +29,6 @@ class ZarinpalServiceProvider extends ServiceProvider
         $zaringate = (bool) config('zarinpal.zaringate', '0');
         $zaringatePSP = (string) config('zarinpal.zaringate_psp', '');
         $client = ($clientType === 'Soap') ? new SoapClient($sandbox) : new GuzzleClient($sandbox);
-        return new Zarinpal($merchantID, $client, $lang, $sandbox, $zaringate, true, $zaringatePSP);
+        return new Zarinpal($merchantID, $client, $lang, $sandbox, $zaringate, $zaringatePSP, true);
     }
 }
