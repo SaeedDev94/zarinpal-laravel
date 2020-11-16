@@ -111,9 +111,10 @@ use Zarinpal\Clients\GuzzleClient; // OR SoapClient
 $merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 $sandbox = false; // OR true
 $zarinGate = false; // OR true
+$zarinGatePSP = 'Asan'; // Avoid this parameter if you don't need a custom PSP zaringate.
 $client = new GuzzleClient($sandbox);
 $lang = 'fa'; // OR en
-$zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, $zarinGate);
+$zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, $zarinGate, $zarinGatePSP);
 // object is ready, call methods now!
 ...
 ```
@@ -198,7 +199,10 @@ foreach($payments as $payment) {
     * possible values: [0, 1]
 * ZARINPAL_ZARINGATE:
     * use zarringate for redirect urls
-    * possible values: [0, 1]    
+    * possible values: [0, 1]
+* ZARINPAL_ZARINGATE_PSP:
+    * use custom PSP for zaringate 
+    * possible values: 'Asan', 'Sep', 'Sad', 'Pec', 'Fan', 'Emz'           
 * ZARINPAL_CLIENT:
     * client to send requests and receive responses
     * possible values: [Guzzle, Soap]
