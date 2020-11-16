@@ -12,6 +12,8 @@ class Zarinpal
     public $lang;
     public $sandbox;
     public $zarinGate;
+    public $zarinGatePSPList;
+    public $zarinGatePSP;
     public $laravel;
     public $response;
 
@@ -22,6 +24,7 @@ class Zarinpal
      * @param string $lang
      * @param bool $sandbox
      * @param bool $zarinGate
+     * @param string $zarinGatePSP
      * @param bool $laravel
      */
     public function __construct(
@@ -30,15 +33,18 @@ class Zarinpal
         string $lang,
         bool $sandbox,
         bool $zarinGate,
-        bool $laravel = false
+        bool $laravel = false,
+        string $zarinGatePSP = ''
     ) {
         $this->merchantID = $merchantID;
         $this->client = $client;
         $this->lang = $lang;
         $this->sandbox = $sandbox;
         $this->zarinGate = $zarinGate;
+        $this->zarinGatePSP = $zarinGatePSP;
         $this->laravel = $laravel;
         $this->response = [];
+        $this->zarinGatePSPList = ['Asan', 'Sep', 'Sad', 'Pec', 'Fan', 'Emz'];
     }
 
     /**
@@ -180,9 +186,18 @@ class Zarinpal
      */
     public function getRedirectUrl(string $authority)
     {
-        $sub = ($this->sandbox) ? 'sandbox' : 'www';
-        $zarinGate = ($this->zarinGate) ? '/ZarinGate' : '';
-        return 'https://' . $sub . '.zarinpal.com/pg/StartPay/' . $authority . $zarinGate;
+        $subDomain = ($this->sandbox) ? 'sandbox' : 'www';
+        $zarinGateURL = ($this->zarinGate) ? '/ZarinGate' : '';
+
+        if(
+            $this->zarinGate &&
+            trim($this->zarinGatePSP) !== '' &&
+            in_array($this->zarinGatePSP, $this->zarinGatePSPList)
+        ) {
+            $zarinGateURL = '/' . $this->zarinGatePSP;
+        }
+
+        return 'https://' . $subDomain . '.zarinpal.com/pg/StartPay/' . $authority . $zarinGateURL;
     }
 
     /**
