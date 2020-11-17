@@ -111,7 +111,7 @@ use Zarinpal\Clients\GuzzleClient; // OR SoapClient
 $merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
 $sandbox = false; // OR true
 $zarinGate = false; // OR true
-$zarinGatePSP = 'Asan'; // Avoid this parameter if you don't need a custom PSP zaringate.
+$zarinGatePSP = 'Asan'; // Leave this parameter blank if you don't need a custom PSP zaringate.
 $client = new GuzzleClient($sandbox);
 $lang = 'fa'; // OR en
 $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, $zarinGate, $zarinGatePSP);
