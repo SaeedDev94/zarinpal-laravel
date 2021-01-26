@@ -14,7 +14,7 @@ class GuzzleClient implements IClient
         $this->baseUrl = 'https://' . $sub . '.zarinpal.com/pg/v4/payment/';
     }
 
-    public $baseUrl;
+    public string $baseUrl;
 
     /**
      * Send requests to zarinpal

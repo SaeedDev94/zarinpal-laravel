@@ -35,19 +35,17 @@ class Zarinpal
         $this->zarinGate = $zarinGate;
         $this->zarinGatePSP = $zarinGatePSP;
         $this->laravel = $laravel;
-        $this->response = [];
         $this->zarinGatePSPList = ['Asan', 'Sep', 'Sad', 'Pec', 'Fan', 'Emz'];
     }
 
-    public $merchantID;
-    public $client;
-    public $lang;
-    public $sandbox;
-    public $zarinGate;
-    public $zarinGatePSPList;
-    public $zarinGatePSP;
-    public $laravel;
-    public $response;
+    public string $merchantID;
+    public IClient $client;
+    public string $lang;
+    public bool $sandbox;
+    public bool $zarinGate;
+    public array $zarinGatePSPList;
+    public string $zarinGatePSP;
+    public bool $laravel;
 
     /**
      * Request for new payment
