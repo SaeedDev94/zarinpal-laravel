@@ -89,9 +89,9 @@ public function verify(Request $request, Zarinpal $zarinpal) {
     if ($request->input('Status') !== 'OK') return;
     $response = $zarinpal->verify($payment);
     $code = $response['data']['code'];
-    $refId = $response['data']['ref_id'];
     $message = $zarinpal->getCodeMessage($code);
     if($code === 100) {
+        $refId = $response['data']['ref_id'];
         return 'Payment was successful,
         RefID: ' . $refId . ',
         Message: ' . $message;
