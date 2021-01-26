@@ -35,7 +35,7 @@ use Zarinpal\Zarinpal;
 ...
 
 ...
-public function request(Zarinpal $zarinpal) {
+function request(Zarinpal $zarinpal) {
     $payment = [
         'callback_url' => route('payment.verify'), // Required
         'amount'       => 5000,                    // Required
@@ -81,7 +81,7 @@ use Zarinpal\Zarinpal;
 ...
 
 ...
-public function verify(Request $request, Zarinpal $zarinpal) {
+function verify(Request $request, Zarinpal $zarinpal) {
     $payment = [
         'authority' => $request->input('Authority'), // $_GET['Authority']
         'amount'    => 5000
