@@ -18,7 +18,7 @@ class Request
             'description' => RequestPayload::DESCRIPTION,
             'callback_url' => RequestPayload::CALLBACK_URL,
             'metadata' => [
-                'email' => 'saeedp47@gmail.com'
+                'email' => RequestPayload::METADATA['EMAIL']
             ]
         ];
 
