@@ -38,10 +38,10 @@ use Zarinpal\Zarinpal;
 public function request(Zarinpal $zarinpal) {
     $payment = [
         'callback_url' => route('payment.verify'), // Required
-        'amount'       => 5000,                     // Required
-        'description'  => 'a short description',    // Required
+        'amount'       => 5000,                    // Required
+        'description'  => 'a short description',   // Required
         'metadata'     => [
-            'mobile' => '0933xxx7694', // Optional
+            'mobile' => '0933xxx7694',       // Optional
             'email'  => 'saeedp47@gmail.com' // Optional
         ]
     ];
@@ -115,7 +115,7 @@ use Zarinpal\Clients\GuzzleClient; // OR SoapClient
 
 ...
 $merchantID = 'XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX';
-$sandbox = false; // OR true
+$sandbox = false;
 $zarinGate = false; // OR true
 $zarinGatePSP = 'Asan'; // Leave this parameter blank if you don't need a custom PSP zaringate.
 $client = new GuzzleClient($sandbox);
@@ -146,4 +146,4 @@ php Request.php
 
 # **Official documents**
 
-[Link](https://next.zarinpal.com/paymentGateway/),
+[Link](https://next.zarinpal.com/paymentGateway/)
