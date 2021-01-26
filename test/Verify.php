@@ -1,6 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require_once '../vendor/autoload.php';
 require_once 'config/RequestPayload.php';
 require_once '_Test.php';
 
@@ -10,9 +10,9 @@ class Verify
 {
     use _Test;
 
-    function run()
+    function run(): void
     {
-        $zarinpal = $this->getZarinpalInstance();
+        $this->setZarinpal();
         $payload = [
             'amount' => RequestPayload::AMOUNT,
             'authority' => $_GET['Authority'],
@@ -24,17 +24,14 @@ class Verify
         $this->printLn('Verifying the payment ...');
 
         try {
-            $response = $zarinpal->verify($payload);
-
-            $this->printLn('========= Success =========');
-            $this->printLn('$response:');
-            $this->printLn(json_encode($response, JSON_PRETTY_PRINT));
+            $response = $this->zarinpal->verify($payload);
+            $this->printResponse($response);
         } catch (RequestException $exception) {
             $this->handleRequestException($exception);
         }
     }
 
-    function checkStatus()
+    function checkStatus(): bool
     {
         if (!isset($_GET['Status'])) {
             $this->printLn('No "Status" QueryString');
@@ -47,7 +44,7 @@ class Verify
         return true;
     }
 
-    function checkAuthority()
+    function checkAuthority(): bool
     {
         if (!isset($_GET['Authority'])) {
             $this->printLn('No "Authority" QueryString');
@@ -60,7 +57,7 @@ class Verify
         return true;
     }
 
-    function printLn(string $message)
+    function printLn(string $message): void
     {
         echo "<pre>${message}</pre>\n";
     }

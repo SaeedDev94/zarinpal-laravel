@@ -1,7 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php';
-require_once 'config/ZarinpalConfig.php';
+require_once '../vendor/autoload.php';
 require_once 'config/RequestPayload.php';
 require_once '_Test.php';
 
@@ -11,9 +10,9 @@ class Request
 {
     use _Test;
 
-    function run()
+    function run(): void
     {
-        $zarinpal = $this->getZarinpalInstance();
+        $this->setZarinpal();
         $payload = [
             'amount' => RequestPayload::AMOUNT,
             'description' => RequestPayload::DESCRIPTION,
@@ -23,24 +22,20 @@ class Request
             ]
         ];
 
+        $this->warning();
+
         $this->printLn('Request::run()');
         $this->printLn('$payload:');
         $this->printLn(json_encode($payload, JSON_PRETTY_PRINT));
         $this->printLn('Requesting for payment ...');
 
         try {
-            $response = $zarinpal->request($payload);
+            $response = $this->zarinpal->request($payload);
+            $this->printResponse($response);
 
-            $this->printLn('========= Success =========');
-            $this->printLn('$response:');
-            $this->printLn(json_encode($response, JSON_PRETTY_PRINT));
-
-            $code = $response['data']['code'];
             $authority = $response['data']['authority'];
-            $message = $zarinpal->getCodeMessage($code);
-            $paymentLink = $zarinpal->getRedirectUrl($authority);
+            $paymentLink = $this->zarinpal->getRedirectUrl($authority);
 
-            $this->printLn('$message: ' . $message);
             $this->printLn('$paymentLink: ' . $paymentLink);
             $this->printLn('Starting server ...');
 
@@ -51,7 +46,36 @@ class Request
         }
     }
 
-    function printLn(string $message)
+    function warning(): void
+    {
+        $this->printLn('========= WARNING =========');
+        $this->printLn("Since sandbox disabled by zarinpal team,");
+        $this->printLn("This test is a real payment and you must spend real money!");
+        $this->printLn("However the amount is minimum as possible");
+        $this->printLn("Do you want to continue?");
+        $this->printLn("1- Yes, 2- No, 3- Enter a custom merchantID [2]");
+        $option = trim(fgets(STDIN));
+        switch ($option) {
+            case '1':
+                // Accepted
+                break;
+            case '3':
+                $this->printLn('Enter merchantID:');
+                $merchantID = trim(fgets(STDIN));
+                if (strlen($merchantID) !== 36) {
+                    $this->printLn('merchantID length must be 36');
+                    $this->printLn('ABORTING ...');
+                    exit;
+                }
+                $this->zarinpal->merchantID = $merchantID;
+                break;
+            default:
+                $this->printLn('ABORTING ...');
+                exit;
+        }
+    }
+
+    function printLn(string $message): void
     {
         echo "${message}\n";
     }

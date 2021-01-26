@@ -1,14 +1,14 @@
 <?php
 
-require_once 'config/ZarinpalConfig.php';
-
 use GuzzleHttp\Exception\RequestException;
 use Zarinpal\Clients\GuzzleClient;
 use Zarinpal\Zarinpal;
 
 trait _Test
 {
-    function getZarinpalInstance()
+    private Zarinpal $zarinpal;
+
+    function setZarinpal(): void
     {
         $sandbox = ZarinpalConfig::SANDBOX;
         $merchantID = ZarinpalConfig::MERCHANT_ID;
@@ -32,10 +32,20 @@ trait _Test
 
         $this->printLn('$zarinpal created');
 
-        return $zarinpal;
+        $this->zarinpal = $zarinpal;
     }
 
-    function handleRequestException(RequestException $exception)
+    function printResponse(array $response): void
+    {
+        $code = $response['data']['code'];
+        $message = $this->zarinpal->getCodeMessage($code);
+        $this->printLn('========= Success =========');
+        $this->printLn('$response:');
+        $this->printLn(json_encode($response, JSON_PRETTY_PRINT));
+        $this->printLn('$message: ' . $message);
+    }
+
+    function handleRequestException(RequestException $exception): void
     {
         $this->printLn('========= Error =========');
         $this->printLn('Code: ' . $exception->getCode());
