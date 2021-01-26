@@ -2,6 +2,8 @@
 
 namespace Zarinpal\Clients;
 
+use GuzzleHttp\Exception\GuzzleException;
+
 interface IClient
 {
     /**
@@ -46,10 +48,11 @@ interface IClient
      * Send requests to zarinpal
      * and receive responses.
      *
-     * @param string $uri
-     * @param array $input
+     * @param string $method
+     * @param array $payload
      *
+     * @throws GuzzleException
      * @return array
      */
-    public function sendRequest(string $uri, array $input);
+    public function sendRequest(string $method, array $payload);
 }
