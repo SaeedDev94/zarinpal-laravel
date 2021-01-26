@@ -1,8 +1,7 @@
 # **Zarinpal payment for Laravel Framework**
 
 - [Use this lib with other frameworks](#use-this-lib-with-other-frameworks)<br>
-- [Other available methods](#other-available-methods)<br>
-- [Other available configs](#other-available-configs)<br>
+- [Available configs](#available-configs)<br>
 
 install it:
 
@@ -38,20 +37,24 @@ use Zarinpal\Zarinpal;
 ...
 public function request(Zarinpal $zarinpal) {
     $payment = [
-        'CallbackURL' => route('payment.verify'), // Required
-        'Amount'      => 5000,                    // Required
-        'Description' => 'a short description',   // Required
-        'Email'       => 'saeedp47@gmail.com',    // Optional
-        'Mobile'      => '0933xxx7694'            // Optional
+        'callback_url' => route('payment.verify'), // Required
+        'amount'       => 5000,                     // Required
+        'description'  => 'a short description',    // Required
+        'metadata'     => [
+            'mobile' => '0933xxx7694', // Optional
+            'email'  => 'saeedp47@gmail.com' // Optional
+        ]
     ];
     $response = $zarinpal->request($payment);
-    if($response['Status'] === 100) {
-        $authority = $response['Authority'];
+    $code = $response['data']['code'];
+    $message = $zarinpal->getCodeMessage($code);
+    if($code === 100) {
+        $authority = $response['data']['authority'];
         return $zarinpal->redirect($authority);
     }
     return 'Error,
-    Status: '.$response['Status'].',
-    Message: '.$response['Message'];
+    Code: ' . $code . ',
+    Message: ' . $message;
 }
 ...
 ```
@@ -80,19 +83,22 @@ use Zarinpal\Zarinpal;
 ...
 public function verify(Request $request, Zarinpal $zarinpal) {
     $payment = [
-        'Authority' => $request->input('Authority'), // $_GET['Authority']
-        'Status'    => $request->input('Status'),    // $_GET['Status']
-        'Amount'    => 5000
+        'authority' => $request->input('Authority'), // $_GET['Authority']
+        'amount'    => 5000
     ];
+    if ($request->input('Status') !== 'OK') return;
     $response = $zarinpal->verify($payment);
-    if($response['Status'] === 100) {
+    $code = $response['data']['code'];
+    $refId = $response['data']['ref_id'];
+    $message = $zarinpal->getCodeMessage($code);
+    if($code === 100) {
         return 'Payment was successful,
-        RefID: '.$response['RefID'].',
-        Message: '.$response['Message'];
+        RefID: ' . $refId . ',
+        Message: ' . $message;
     }
     return 'Error,
-    Status: '.$response['Status'].',
-    Message: '.$response['Message'];
+    Code: ' . $code . ',
+    Message: ' . $message;
 }
 ...
 ```
@@ -119,96 +125,25 @@ $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, $zarinGate, $zar
 ...
 ```
 
-# **Other available methods**
-
-1- `requestWithExtra`:
-dividing money in different zarinpal wallets
-```php
-...
-// same as request method,
-// but this needs AdditionalData in payment array
-$amount = 10000;
-$divider = [];
-// 8000 in zp.1.1 wallet and
-// 2000 in zp.2.5 wallet
-$divider['Wages'] = [
-    'zp.1.1' => [
-        'Amount'      => $amount * (80/100), // 80%
-        'Description' => 'a short description'
-    ],
-    'zp.2.5' => [
-        'Amount'      => $amount * (20/100), // 20%
-        'Description' => 'a short description'
-    ]
-];
-$payment = [
-    ...
-    'Amount'         => $amount,               // Required
-    'AdditionalData' => json_encode($divider), // Required
-    ...
-];
-$response = $zarinpal->requestWithExtra($payment);
-...
-```
-
-2- `verifyWithExtra`:
-if you used requestWithExtra method for payment then you must verify it with this one
-```php
-...
-// exactly same as verify method
-$response = $zarinpal->verifyWithExtra($payment);
-...
-
-```
-
-3- `refreshAuthority`:
-extends authority token lifetime
-```php
-...
-$detail = [
-    'Authority' => $authority, // Required
-    'ExpireIn'  => 7200        // Required (in secodns)
-];
-$response = $zarinpal->refreshAuthority($detail);
-...
-```
-
-4- `unverifiedTransactions`:
-get successful payments which you didn't call verify method on them
-```php
-...
-$response = $zarinpal->unverifiedTransactions();
-$payments = json_decode($response['Authorities']);
-foreach($payments as $payment) {
-    $authority = $payment->Authority;
-    $amount = $payment->Amount;
-    $channel = $payment->Channel;
-    $date = $payment->Date;
-    ...
-}
-...
-```
-
-# **Other available configs**
+# **Available configs**
 
 * ZARINPAL_LANG:
     * messages language
     * possible values: [fa, en]
-* ZARINPAL_SANDBOX:
-    * use sandbox service for testing payment
-    * possible values: [0, 1]
 * ZARINPAL_ZARINGATE:
     * use zarringate for redirect urls
     * possible values: [0, 1]
 * ZARINPAL_ZARINGATE_PSP:
     * use custom PSP for zaringate 
-    * possible values: 'Asan', 'Sep', 'Sad', 'Pec', 'Fan', 'Emz'           
-* ZARINPAL_CLIENT:
-    * client to send requests and receive responses
-    * possible values: [Guzzle, Soap]
+    * possible values: 'Asan', 'Sep', 'Sad', 'Pec', 'Fan', 'Emz'
+    
+# **Run test**
 
-# **Final note**
+```bash
+cd test
+php Request.php
+```
 
-This lib and its methods written based on
-[official zarinpal documents](https://github.com/ZarinPal-Lab/Documentation-PaymentGateway),
-so reading the docs might be helpful
+# **Official documents**
+
+[Link](https://next.zarinpal.com/paymentGateway/),
