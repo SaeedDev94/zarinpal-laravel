@@ -3,6 +3,7 @@
 namespace Zarinpal\Clients;
 
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 
 interface IClient
 {
@@ -15,6 +16,7 @@ interface IClient
      * @param array $headers
      *
      * @throws GuzzleException
+     * @throws RequestException
      * @return array
      */
     function sendRequest(string $method, array $payload, array $headers = []);

@@ -29,5 +29,8 @@
         "psr-4": {
             "Zarinpal\\": "src/"
         }
+    },
+    "scripts": {
+        "test": "php test/Request.php"
     }
 }

@@ -2,9 +2,10 @@
 
 namespace Zarinpal;
 
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 use Zarinpal\Messages\Message;
 use Zarinpal\Clients\IClient;
-use GuzzleHttp\Exception\GuzzleException;
 
 class Zarinpal
 {
@@ -57,6 +58,7 @@ class Zarinpal
      * @param array $payload
      *
      * @throws GuzzleException
+     * @throws RequestException
      * @return array
      */
     function request(array $payload)
@@ -74,6 +76,7 @@ class Zarinpal
      * @param array $payload
      *
      * @throws GuzzleException
+     * @throws RequestException
      * @return array
      */
     function verify(array $payload)
@@ -89,6 +92,7 @@ class Zarinpal
      * @see http://bit.ly/3qP3MNB
      *
      * @throws GuzzleException
+     * @throws RequestException
      * @return array
      */
     function unVerified()
@@ -107,6 +111,7 @@ class Zarinpal
      * @param array $payload
      *
      * @throws GuzzleException
+     * @throws RequestException
      * @return array
      */
     function refund(string $accessToken, array $payload)

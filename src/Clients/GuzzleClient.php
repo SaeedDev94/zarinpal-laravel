@@ -4,6 +4,7 @@ namespace Zarinpal\Clients;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Exception\RequestException;
 
 class GuzzleClient implements IClient
 {
@@ -23,8 +24,9 @@ class GuzzleClient implements IClient
      * @param array $payload
      * @param array $headers
      *
-     * @return array
      * @throws GuzzleException
+     * @throws RequestException
+     * @return array
      */
     function sendRequest(string $method, array $payload, array $headers = [])
     {
@@ -32,7 +34,12 @@ class GuzzleClient implements IClient
             'base_uri' => $this->baseUrl
         ]);
         $response = $client->request('POST', "${method}.json", [
-            'headers' => $headers,
+            'headers' => array_merge([
+                'user-agent' => 'ZarinPal Rest Api v4',
+                'cache-control' => 'no-cache',
+                'content-type' => 'application/json',
+                'accept' => 'application/json'
+            ], $headers),
             'json' => $payload
         ]);
         $response = $response->getBody()->getContents();

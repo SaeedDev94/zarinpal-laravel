@@ -21,7 +21,7 @@ class ZarinpalServiceProvider extends ServiceProvider
 
     private function getInstance()
     {
-        $merchantID = (string) config('zarinpal.merchantID', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+        $merchantID = (string) config('zarinpal.merchantID', 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
         $lang = (string) config('zarinpal.lang', 'fa');
         $sandbox = (bool) config('zarinpal.sandbox', '0');
         $zaringate = (bool) config('zarinpal.zaringate', '0');
