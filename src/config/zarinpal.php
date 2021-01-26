@@ -9,7 +9,7 @@ return [
     | merchantID must be 36 chars
     |
     */
-    'merchantID' => env('ZARINPAL_MERCHANTID', 'test'),
+    'merchantID' => env('ZARINPAL_MERCHANTID', 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'),
 
     /*
     |--------------------------------------------------------------------------

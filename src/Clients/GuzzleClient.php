@@ -7,7 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class GuzzleClient implements IClient
 {
-    public function __construct($sandbox)
+    function __construct($sandbox)
     {
         $sub = ($sandbox) ? 'sandbox' : 'api';
         $this->baseUrl = 'https://' . $sub . '.zarinpal.com/pg/v4/payment/';
@@ -15,28 +15,27 @@ class GuzzleClient implements IClient
 
     public $baseUrl;
 
-    use BaseClient;
-
     /**
      * Send requests to zarinpal
      * and receive responses.
      *
      * @param string $method
      * @param array $payload
+     * @param array $headers
      *
-     * @throws GuzzleException
      * @return array
+     * @throws GuzzleException
      */
-    public function sendRequest(string $method, array $payload)
+    function sendRequest(string $method, array $payload, array $headers = [])
     {
         $client = new Client([
             'base_uri' => $this->baseUrl
         ]);
         $response = $client->request('POST', "${method}.json", [
+            'headers' => $headers,
             'json' => $payload
         ]);
         $response = $response->getBody()->getContents();
-        $response = json_decode($response, true);
-        return $response;
+        return json_decode($response, true);
     }
 }

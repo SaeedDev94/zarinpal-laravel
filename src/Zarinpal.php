@@ -4,19 +4,10 @@ namespace Zarinpal;
 
 use Zarinpal\Messages\Message;
 use Zarinpal\Clients\IClient;
+use GuzzleHttp\Exception\GuzzleException;
 
 class Zarinpal
 {
-    public $merchantID;
-    public $client;
-    public $lang;
-    public $sandbox;
-    public $zarinGate;
-    public $zarinGatePSPList;
-    public $zarinGatePSP;
-    public $laravel;
-    public $response;
-
     /**
      * Zarinpal constructor.
      * @param string $merchantID
@@ -27,7 +18,7 @@ class Zarinpal
      * @param string $zarinGatePSP
      * @param bool $laravel
      */
-    public function __construct(
+    function __construct(
         string $merchantID,
         IClient $client,
         string $lang,
@@ -47,144 +38,110 @@ class Zarinpal
         $this->zarinGatePSPList = ['Asan', 'Sep', 'Sad', 'Pec', 'Fan', 'Emz'];
     }
 
+    public $merchantID;
+    public $client;
+    public $lang;
+    public $sandbox;
+    public $zarinGate;
+    public $zarinGatePSPList;
+    public $zarinGatePSP;
+    public $laravel;
+    public $response;
+
     /**
      * Request for new payment
      * to get "Authority" if no error occur.
      *
-     * @param array $input
-     * @param bool $extra
+     * @see http://bit.ly/3sVkMU9
      *
+     * @param array $payload
+     *
+     * @throws GuzzleException
      * @return array
      */
-    public function request(array $input, $extra = false)
+    function request(array $payload)
     {
-        $payment = [
-            'MerchantID' => $this->merchantID,
-            'CallbackURL' => (string) $input['CallbackURL'],
-            'Amount' => (int) $input['Amount'],
-            'Description' => (string) $input['Description'],
-        ];
-        if (isset($input['Email'])) {
-            $payment['Email'] = (string) $input['Email'];
-        }
-        if (isset($input['Mobile'])) {
-            $payment['Mobile'] = (string) $input['Mobile'];
-        }
-        if ($extra) {
-            $payment['AdditionalData'] = (string) $input['AdditionalData'];
-        }
-        $this->response = $this->client->request($payment, $extra);
-        $this->setMessage();
-
-        return $this->response;
+        return $this->client->sendRequest('request', array_merge([
+            'merchant_id' => $this->merchantID
+        ], $payload));
     }
 
     /**
      * Verify payment success.
      *
-     * @param array $input
-     * @param bool $extra
+     * @see http://bit.ly/3a75K54
      *
+     * @param array $payload
+     *
+     * @throws GuzzleException
      * @return array
      */
-    public function verify(array $input, $extra = false)
+    function verify(array $payload)
     {
-        if ($input['Status'] === 'OK') {
-            $payment = [
-                'MerchantID' => $this->merchantID,
-                'Authority' => (string) $input['Authority'],
-                'Amount' => (int) $input['Amount'],
-            ];
-            $this->response = $this->client->verify($payment, $extra);
-        } else {
-            $this->response = ['Status' => -101];
-        }
-        $this->setMessage();
-
-        return $this->response;
-    }
-
-    /**
-     * Request for new payment with extra data.
-     *
-     * @param array $input
-     *
-     * @return array
-     */
-    public function requestWithExtra(array $input)
-    {
-        return $this->request($input, true);
-    }
-
-    /**
-     * Verify payment success with extra data.
-     *
-     * @param array $input
-     *
-     * @return array
-     */
-    public function verifyWithExtra(array $input)
-    {
-        return $this->verify($input, true);
-    }
-
-    /**
-     * Extends authority token lifetime.
-     *
-     * @param array $input
-     *
-     * @return array
-     */
-    public function refreshAuthority(array $input)
-    {
-        $detail = [
-            'MerchantID' => $this->merchantID,
-            'Authority' => (string) $input['Authority'],
-            'ExpireIn' => (int) $input['ExpireIn'],
-        ];
-        $this->response = $this->client->refreshAuthority($detail);
-        $this->setMessage();
-
-        return $this->response;
+        return $this->client->sendRequest('verify', array_merge([
+            'merchant_id' => $this->merchantID
+        ], $payload));
     }
 
     /**
      * Get unverified transactions.
      *
+     * @see http://bit.ly/3qP3MNB
+     *
+     * @throws GuzzleException
      * @return array
      */
-    public function unverifiedTransactions()
+    function unVerified()
     {
-        $detail = [
-            'MerchantID' => $this->merchantID,
-        ];
-        $this->response = $this->client->unverifiedTransactions($detail);
-        $this->setMessage();
-
-        return $this->response;
+        return $this->client->sendRequest('unVerified', [
+            'merchant_id' => $this->merchantID
+        ]);
     }
 
     /**
-     * Set message of status
+     * Refund to user.
      *
-     * @return void
+     * @see http://bit.ly/3qNEkb2
+     *
+     * @param string $accessToken
+     * @param array $payload
+     *
+     * @throws GuzzleException
+     * @return array
      */
-    public function setMessage()
+    function refund(string $accessToken, array $payload)
     {
-        $lang = $this->lang;
-        $status = (string) $this->response['Status'];
-        $message = Message::get($lang, $status);
-        $this->response['Message'] = $message;
+        return $this->client->sendRequest('unVerified', array_merge([
+            'merchant_id' => $this->merchantID
+        ], $payload), [
+            'authorization' => "Bearer ${accessToken}"
+        ]);
+    }
+
+    /**
+     * Get message of (status) code
+     *
+     * @see http://bit.ly/2M5Ltoz
+     *
+     * @param int $code
+     *
+     * @return string
+     */
+    function getCodeMessage(int $code)
+    {
+        return Message::get($this->lang, $code);
     }
 
     /**
      * Get generated redirect url
      *
+     * @see http://bit.ly/2MsIOF7
+     *
      * @param string $authority
      *
      * @return string
      */
-    public function getRedirectUrl(string $authority)
+    function getRedirectUrl(string $authority)
     {
         $subDomain = ($this->sandbox) ? 'sandbox' : 'www';
         $zarinGateURL = ($this->zarinGate) ? '/ZarinGate' : '';
@@ -207,7 +164,7 @@ class Zarinpal
      *
      * @return mixed
      */
-    public function redirect(string $authority)
+    function redirect(string $authority)
     {
         $url = $this->getRedirectUrl($authority);
         if ($this->laravel) {
