@@ -4,7 +4,7 @@ class ZarinpalConfig {
     const SERVER = [
         'SCHEME' => 'http',
         'HOST' => 'localhost',
-        'PORT' => '8000'
+        'PORT' => 8000
     ];
     /**
      * @var bool SANDBOX

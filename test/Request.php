@@ -39,11 +39,37 @@ class Request
             $this->printLn('$paymentLink: ' . $paymentLink);
             $this->printLn('Starting server ...');
 
-            $server = ZarinpalConfig::SERVER['HOST'] . ':' . ZarinpalConfig::SERVER['PORT'];
+            $freePort = $this->getFreePort();
+            if (!$freePort) {
+                $this->printLn("Can't find a free port");
+                exit;
+            }
+            $server = ZarinpalConfig::SERVER['HOST'] . ':' . $freePort;
             exec("php -S ${server}");
         } catch (RequestException $exception) {
             $this->handleRequestException($exception);
         }
+    }
+
+    function getFreePort(): ?int
+    {
+        $freePort = null;
+        $randomPorts = [ZarinpalConfig::SERVER['PORT'], 2020, 3030, 4040, 5050, 6060, 7070, 8080];
+        $isPortFree = function (string $host, int $port): bool {
+            $connection = @fsockopen($host, $port);
+            if (is_resource($connection)) {
+                fclose($connection);
+                return false;
+            }
+            return true;
+        };
+        foreach ($randomPorts as $port) {
+            if ($isPortFree(ZarinpalConfig::SERVER['HOST'], $port)) {
+                $freePort = $port;
+                break;
+            }
+        }
+        return $freePort;
     }
 
     function warning(): void
