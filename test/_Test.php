@@ -50,7 +50,7 @@ trait _Test
         $this->printLn('$message: ' . $message);
     }
 
-    function handleRequestException(RequestException $exception): void
+    function printRequestException(RequestException $exception): void
     {
         $this->printLn('========= Error =========');
         $this->printLn('Code: ' . $exception->getCode());

@@ -27,7 +27,7 @@ class Verify
             $response = $this->zarinpal->verify($payload);
             $this->printResponse($response);
         } catch (RequestException $exception) {
-            $this->handleRequestException($exception);
+            $this->printRequestException($exception);
         }
     }
 

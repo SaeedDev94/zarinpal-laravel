@@ -47,7 +47,7 @@ class Request
             $server = ZarinpalConfig::SERVER['HOST'] . ':' . $freePort;
             exec("php -S ${server}");
         } catch (RequestException $exception) {
-            $this->handleRequestException($exception);
+            $this->printRequestException($exception);
         }
     }
 
