@@ -150,6 +150,9 @@ $zarinpal = new Zarinpal($merchantID, $client, $lang, $sandbox, $zarinGate, $zar
 # **Run test**
 
 ```bash
+# clone repo
+# cd zarinpal-laravel
+# composer install
 cd test
 php Request.php
 ```
