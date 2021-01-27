@@ -13,10 +13,15 @@ class Request
     function run(): void
     {
         $this->setZarinpal();
+        $freePort = $this->getFreePort();
+        if (!$freePort) {
+            $this->printLn("Can't find a free port");
+            exit;
+        }
         $payload = [
             'amount' => RequestPayload::AMOUNT,
             'description' => RequestPayload::DESCRIPTION,
-            'callback_url' => RequestPayload::CALLBACK_URL,
+            'callback_url' => str_replace('{PORT}', $freePort, RequestPayload::CALLBACK_URL),
             'metadata' => [
                 'email' => RequestPayload::METADATA['EMAIL']
             ]
@@ -39,11 +44,6 @@ class Request
             $this->printLn('$paymentLink: ' . $paymentLink);
             $this->printLn('Starting server ...');
 
-            $freePort = $this->getFreePort();
-            if (!$freePort) {
-                $this->printLn("Can't find a free port");
-                exit;
-            }
             $server = ZarinpalConfig::SERVER['HOST'] . ':' . $freePort;
             exec("php -S ${server}");
         } catch (RequestException $exception) {
