@@ -2,7 +2,6 @@
 
 namespace Zarinpal;
 
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 use Zarinpal\Messages\Message;
 use Zarinpal\Clients\IClient;
@@ -55,7 +54,6 @@ class Zarinpal
      *
      * @param array $payload
      *
-     * @throws GuzzleException
      * @throws RequestException
      * @return array
      */
@@ -73,7 +71,6 @@ class Zarinpal
      *
      * @param array $payload
      *
-     * @throws GuzzleException
      * @throws RequestException
      * @return array
      */
@@ -89,7 +86,6 @@ class Zarinpal
      *
      * @see http://bit.ly/3qP3MNB
      *
-     * @throws GuzzleException
      * @throws RequestException
      * @return array
      */
@@ -108,7 +104,6 @@ class Zarinpal
      * @param string $accessToken
      * @param array $payload
      *
-     * @throws GuzzleException
      * @throws RequestException
      * @return array
      */

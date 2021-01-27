@@ -3,7 +3,6 @@
 namespace Zarinpal\Clients;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Exception\RequestException;
 
 class GuzzleClient implements IClient
@@ -24,7 +23,6 @@ class GuzzleClient implements IClient
      * @param array $payload
      * @param array $headers
      *
-     * @throws GuzzleException
      * @throws RequestException
      * @return array
      */
