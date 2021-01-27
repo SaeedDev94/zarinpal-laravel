@@ -35,13 +35,18 @@ trait _Test
         $this->zarinpal = $zarinpal;
     }
 
+    function printObject(array $object): void
+    {
+        $this->printLn(json_encode($object, JSON_PRETTY_PRINT));
+    }
+
     function printResponse(array $response): void
     {
         $code = $response['data']['code'];
         $message = $this->zarinpal->getCodeMessage($code);
         $this->printLn('========= Success =========');
         $this->printLn('$response:');
-        $this->printLn(json_encode($response, JSON_PRETTY_PRINT));
+        $this->printObject($response);
         $this->printLn('$message: ' . $message);
     }
 

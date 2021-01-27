@@ -26,7 +26,7 @@ class Request
 
         $this->printLn('Request::run()');
         $this->printLn('$payload:');
-        $this->printLn(json_encode($payload, JSON_PRETTY_PRINT));
+        $this->printObject($payload);
         $this->printLn('Requesting for payment ...');
 
         try {
