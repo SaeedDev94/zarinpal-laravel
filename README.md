@@ -31,6 +31,7 @@ ZARINPAL_MERCHANTID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
 <?php
 
 ...
+use GuzzleHttp\Exception\RequestException;
 use Zarinpal\Zarinpal;
 ...
 
@@ -45,16 +46,20 @@ function request(Zarinpal $zarinpal) {
             'email'  => 'saeedp47@gmail.com' // Optional
         ]
     ];
-    $response = $zarinpal->request($payment);
-    $code = $response['data']['code'];
-    $message = $zarinpal->getCodeMessage($code);
-    if($code === 100) {
-        $authority = $response['data']['authority'];
-        return $zarinpal->redirect($authority);
+    try {
+      $response = $zarinpal->request($payment);
+      $code = $response['data']['code'];
+      $message = $zarinpal->getCodeMessage($code);
+      if($code === 100) {
+          $authority = $response['data']['authority'];
+          return $zarinpal->redirect($authority);
+      }
+      return 'Error,
+      Code: ' . $code . ',
+      Message: ' . $message;
+    } catch (RequestException $exception) {
+        // handle exception
     }
-    return 'Error,
-    Code: ' . $code . ',
-    Message: ' . $message;
 }
 ...
 ```
@@ -76,6 +81,7 @@ to get the redirect url as a string.
 <?php
 
 ...
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use Zarinpal\Zarinpal;
 ...
@@ -87,18 +93,22 @@ function verify(Request $request, Zarinpal $zarinpal) {
         'amount'    => 5000
     ];
     if ($request->input('Status') !== 'OK') return;
-    $response = $zarinpal->verify($payment);
-    $code = $response['data']['code'];
-    $message = $zarinpal->getCodeMessage($code);
-    if($code === 100) {
-        $refId = $response['data']['ref_id'];
-        return 'Payment was successful,
-        RefID: ' . $refId . ',
-        Message: ' . $message;
+    try {
+      $response = $zarinpal->verify($payment);
+      $code = $response['data']['code'];
+      $message = $zarinpal->getCodeMessage($code);
+      if($code === 100) {
+          $refId = $response['data']['ref_id'];
+          return 'Payment was successful,
+          RefID: ' . $refId . ',
+          Message: ' . $message;
+      }
+      return 'Error,
+      Code: ' . $code . ',
+      Message: ' . $message;
+    } catch (RequestException $exception) {
+        // handle exception
     }
-    return 'Error,
-    Code: ' . $code . ',
-    Message: ' . $message;
 }
 ...
 ```
