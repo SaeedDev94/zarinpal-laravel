@@ -92,7 +92,7 @@ function verify(Request $request, Zarinpal $zarinpal) {
         'authority' => $request->input('Authority'), // $_GET['Authority']
         'amount'    => 5000
     ];
-    if ($request->input('Status') !== 'OK') return;
+    if ($request->input('Status') !== 'OK') abort(406);
     try {
       $response = $zarinpal->verify($payment);
       $code = $response['data']['code'];
