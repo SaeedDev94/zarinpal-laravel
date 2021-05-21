@@ -54,9 +54,7 @@ function request(Zarinpal $zarinpal) {
           $authority = $response['data']['authority'];
           return $zarinpal->redirect($authority);
       }
-      return 'Error,
-      Code: ' . $code . ',
-      Message: ' . $message;
+      return "Error, Code: ${code}, Message: ${message}";
     } catch (RequestException $exception) {
         // handle exception
     }
@@ -103,9 +101,7 @@ function verify(Request $request, Zarinpal $zarinpal) {
           RefID: ' . $refId . ',
           Message: ' . $message;
       }
-      return 'Error,
-      Code: ' . $code . ',
-      Message: ' . $message;
+      return "Error, Code: ${code}, Message: ${message}";
     } catch (RequestException $exception) {
         // handle exception
     }
