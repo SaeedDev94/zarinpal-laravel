@@ -97,9 +97,7 @@ function verify(Request $request, Zarinpal $zarinpal) {
       $message = $zarinpal->getCodeMessage($code);
       if($code === 100) {
           $refId = $response['data']['ref_id'];
-          return 'Payment was successful,
-          RefID: ' . $refId . ',
-          Message: ' . $message;
+          return "Payment was successful, RefID: ${refId}, Message: ${message}";
       }
       return "Error, Code: ${code}, Message: ${message}";
     } catch (RequestException $exception) {
