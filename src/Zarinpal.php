@@ -112,7 +112,7 @@ class Zarinpal
         return $this->client->sendRequest('unVerified', array_merge([
             'merchant_id' => $this->merchantID
         ], $payload), [
-            'authorization' => "Bearer ${accessToken}"
+            'authorization' => "Bearer {$accessToken}"
         ]);
     }
 
