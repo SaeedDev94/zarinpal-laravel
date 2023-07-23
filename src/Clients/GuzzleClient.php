@@ -31,7 +31,7 @@ class GuzzleClient implements IClient
         $client = new Client([
             'base_uri' => $this->baseUrl
         ]);
-        $response = $client->request('POST', "${method}.json", [
+        $response = $client->request('POST', "{$method}.json", [
             'headers' => array_merge([
                 'user-agent' => 'ZarinPal Rest Api v4',
                 'cache-control' => 'no-cache',
